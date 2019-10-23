@@ -1,0 +1,13 @@
+name: redux_entity
+description: Library for maintaining collections in a Redux store
+version: 0.0.1
+author: Michael Marner <michael@20papercups.net>
+homepage:
+
+environment:
+  sdk: '>=2.1.0 <3.0.0'
+
+dependencies:
+
+dev_dependencies:
+  test: ^1.6.0
