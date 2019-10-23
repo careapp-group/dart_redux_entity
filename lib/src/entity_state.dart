@@ -1,5 +1,5 @@
 class EntityState<T> {
-  EntityState({
+  const EntityState({
     this.entities = const {},
     this.ids = const [],
   });

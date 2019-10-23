@@ -66,7 +66,7 @@ class UnsortedEntityStateAdapter<T> implements EntityStateAdapter<T> {
   }
 
   DidMutate _addOneMutably(T entity, EntityState<T> state) {
-    final key = _getId(entity);
+    final key = getId(entity);
     // nothing to be done
     if (state.entities.containsKey(key)) {
       return DidMutate.none;
@@ -111,7 +111,7 @@ class UnsortedEntityStateAdapter<T> implements EntityStateAdapter<T> {
     return didMutate ? DidMutate.both : DidMutate.none;
   }
 
-  String _getId(T item) {
+  String getId(T item) {
     if (selectId != null) {
       return selectId(item);
     }
@@ -124,14 +124,14 @@ class UnsortedEntityStateAdapter<T> implements EntityStateAdapter<T> {
 
   DidMutate _updateManyMutably(List<T> changes, EntityState<T> state) {
     changes = changes
-        .where((item) => state.entities.containsKey(_getId(item)))
+        .where((item) => state.entities.containsKey(getId(item)))
         .toList();
     if (changes.length == 0) {
       return DidMutate.none;
     }
 
     for (T item in changes) {
-      state.entities[_getId(item)] = item;
+      state.entities[getId(item)] = item;
     }
     return DidMutate.entitiesOnly;
   }
@@ -145,7 +145,7 @@ class UnsortedEntityStateAdapter<T> implements EntityStateAdapter<T> {
     final List<T> updated = [];
 
     for (T entity in entities) {
-      final id = _getId(entity);
+      final id = getId(entity);
       if (state.entities.containsKey(id)) {
         updated.add(entity);
       } else {

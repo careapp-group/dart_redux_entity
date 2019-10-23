@@ -10,7 +10,7 @@ class SuccessCreateOne<T> {
 }
 
 class FailCreateOne<T> {
-  FailCreateOne(this.entity, this.error);
+  FailCreateOne({this.entity, this.error});
   final T entity;
   final dynamic error;
 }
@@ -26,7 +26,7 @@ class SuccessCreateMany<T> {
 }
 
 class FailCreateMany<T> {
-  FailCreateMany(this.entities, this.error);
+  FailCreateMany({this.entities, this.error});
   final List<T> entities;
   final dynamic error;
 }
@@ -43,7 +43,7 @@ class SuccessRetrieveOne<T> {
 }
 
 class FailRetrieveOne<T> {
-  FailRetrieveOne(this.id, this.error);
+  FailRetrieveOne({this.id, this.error});
   final String id;
   final dynamic error;
 }
@@ -88,7 +88,7 @@ class SuccessUpdateOne<T> {
 }
 
 class FailUpdateOne<T> {
-  FailUpdateOne(this.entity, this.error);
+  FailUpdateOne({this.entity, this.error});
   final T entity;
   final dynamic error;
 }
@@ -104,7 +104,7 @@ class SuccessUpdateMany<T> {
 }
 
 class FailUpdateMany<T> {
-  FailUpdateMany(this.entities, this.error);
+  FailUpdateMany({this.entities, this.error});
   final List<T> entities;
   final dynamic error;
 }
@@ -117,12 +117,12 @@ class RequestDeleteOne<T> {
 }
 
 class SuccessDeleteOne<T> {
-  SuccessDeleteOne(this.entity);
-  final T entity;
+  SuccessDeleteOne(this.id);
+  final String id;
 }
 
 class FailDeleteOne<T> {
-  FailDeleteOne(this.id, this.error);
+  FailDeleteOne({this.id, this.error});
   final String id;
   final dynamic error;
 }
@@ -133,12 +133,12 @@ class RequestDeleteMany<T> {
 }
 
 class SuccessDeleteMany<T> {
-  SuccessDeleteMany(this.entities);
-  final List<T> entities;
+  SuccessDeleteMany(this.ids);
+  final List<String> ids;
 }
 
 class FailDeleteMany<T> {
-  FailDeleteMany(this.ids, this.error);
+  FailDeleteMany({this.ids, this.error});
   final List<String> ids;
   final dynamic error;
 }
