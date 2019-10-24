@@ -1,5 +1,7 @@
 # redux_entity
 
+[![Build Status](https://travis-ci.org/MichaelMarner/redux_entity.svg?branch=master)](https://travis-ci.org/MichaelMarner/redux_entity) [![Coverage Status](https://coveralls.io/repos/github/MichaelMarner/redux_entity/badge.svg?branch=master)](https://coveralls.io/github/MichaelMarner/redux_entity?branch=master)
+
 Tools for maintaining collections of objects in Redux stores. Aiming to be a close match to Angular's excellent @ngrx/entity, with changes made mostly around the differences between Typescript and Dart.
 
 ## Getting Started
