@@ -3,57 +3,22 @@ import './typedefs.dart';
 import './unsorted_entity_state_adapter.dart';
 import './remote_entity_actions.dart';
 import 'package:redux/redux.dart';
+import './remote_entity_state.dart';
 
-class RemoteEntityState<T> extends EntityState<T> {
-  final bool loadingAll;
-  final Map<String, bool> loadingIds;
-  final bool creating;
-  final dynamic error;
-
-  RemoteEntityState({
-    // our properties
-    this.loadingAll = false,
-    this.loadingIds = const {},
-    this.creating = false,
-    // EntityState properties
-    Map<String, T> entities = const {},
-    List<String> ids = const [],
-    this.error,
-  }) : super(ids: ids, entities: entities) {}
-
-  RemoteEntityState<T> copyWith({
-    // EntityState properties
-    Map<String, T> entities,
-    List<String> ids,
-    // our properties
-    bool loadingAll,
-    Map<String, bool> loadingIds,
-    bool creating,
-    dynamic error,
-  }) {
-    return RemoteEntityState<T>(
-        loadingAll: loadingAll ?? this.loadingAll,
-        loadingIds: loadingIds ?? this.loadingIds,
-        creating: creating ?? this.creating,
-        error: error ?? this.error,
-        entities: entities ?? this.entities,
-        ids: ids ?? this.ids);
-  }
-}
-
-class RemoteEntityReducer<T> extends ReducerClass<RemoteEntityState<T>> {
+class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
+    extends ReducerClass<RemoteEntityState<T>> {
   RemoteEntityReducer({
     IdSelector<T> selectId,
   }) : adapter = UnsortedEntityStateAdapter<T>(selectId: selectId);
 
   final UnsortedEntityStateAdapter<T> adapter;
 
-  RemoteEntityState<T> call(RemoteEntityState<T> state, action) {
+  S call(RemoteEntityState<T> state, action) {
     if (action is RequestCreateOne<T> || action is RequestCreateMany<T>) {
-      return RemoteEntityState<T>(creating: true, error: false);
+      return state.copyWith(creating: true, error: false);
     }
     if (action is FailCreateOne<T> || action is FailCreateMany<T>) {
-      return RemoteEntityState<T>(creating: false, error: action.error);
+      return state.copyWith(creating: false, error: action.error);
     }
     if (action is SuccessCreateOne<T>) {
       return this

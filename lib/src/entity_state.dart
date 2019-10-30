@@ -1,8 +1,13 @@
+typedef Deserializer<T> = T Function(Map<String, dynamic>);
+
 class EntityState<T> {
   const EntityState({
     this.entities = const {},
     this.ids = const [],
   });
+
+  final Map<String, T> entities;
+  final List<String> ids;
 
   EntityState copyWith({
     Map<String, T> entities,
@@ -14,6 +19,20 @@ class EntityState<T> {
     );
   }
 
-  final Map<String, T> entities;
-  final List<String> ids;
+  Map<String, dynamic> toJson() {
+    return {
+      'entities': this.entities,
+      'ids': this.ids,
+    };
+  }
+
+  factory EntityState.fromJson(
+    Map<String, dynamic> json,
+    Deserializer<T> deserializer,
+  ) =>
+      EntityState(
+          entities: (json['entities'] as Map<String, dynamic>).map(
+            (key, props) => MapEntry<String, T>(key, deserializer(props)),
+          ),
+          ids: List<String>.from(json['ids']));
 }

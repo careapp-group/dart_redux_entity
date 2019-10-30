@@ -4,8 +4,8 @@ import '../fixtures/book.dart';
 
 void main() {
   group(RemoteEntityReducer, () {
-    final RemoteEntityReducer<BookModel> reducer =
-        RemoteEntityReducer<BookModel>();
+    final RemoteEntityReducer<RemoteEntityState<BookModel>, BookModel> reducer =
+        RemoteEntityReducer<RemoteEntityState<BookModel>, BookModel>();
 
     group(RequestCreateOne, () {
       test('Should set creating true', () {

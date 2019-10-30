@@ -9,7 +9,7 @@ IdSelector defaultIdSelector = (item) {
 };
 
 class UnsortedEntityStateAdapter<T> implements EntityStateAdapter<T> {
-  UnsortedEntityStateAdapter({
+  const UnsortedEntityStateAdapter({
     this.selectId,
   });
 
