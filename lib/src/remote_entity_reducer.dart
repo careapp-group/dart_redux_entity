@@ -6,14 +6,14 @@ import 'package:redux/redux.dart';
 import './remote_entity_state.dart';
 
 class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
-    extends ReducerClass<RemoteEntityState<T>> {
+    extends ReducerClass<S> {
   RemoteEntityReducer({
     IdSelector<T> selectId,
   }) : adapter = UnsortedEntityStateAdapter<T>(selectId: selectId);
 
   final UnsortedEntityStateAdapter<T> adapter;
 
-  S call(RemoteEntityState<T> state, action) {
+  S call(S state, action) {
     if (action is RequestCreateOne<T> || action is RequestCreateMany<T>) {
       return state.copyWith(creating: true, error: false);
     }
