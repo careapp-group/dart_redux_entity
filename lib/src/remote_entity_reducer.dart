@@ -21,14 +21,32 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
       return state.copyWith(creating: false, error: action.error);
     }
     if (action is SuccessCreateOne<T>) {
-      return this
-          .adapter
-          .addOne(action.entity, state.copyWith(creating: false));
+      return this.adapter.addOne(
+            action.entity,
+            state.copyWith(
+              creating: false,
+              updateTimes: <String, DateTime>{
+                ...state.updateTimes,
+                adapter.getId(action.entity): DateTime.now()
+              },
+            ),
+          );
     }
     if (action is SuccessCreateMany<T>) {
-      return this
-          .adapter
-          .addMany(action.entities, state.copyWith(creating: false));
+      return this.adapter.addMany(
+          action.entities,
+          state.copyWith(
+            creating: false,
+            updateTimes: <String, DateTime>{
+              ...state.updateTimes,
+              ...action.entities.asMap().map<String, DateTime>(
+                    (key, entity) => MapEntry<String, DateTime>(
+                      adapter.getId(entity),
+                      DateTime.now(),
+                    ),
+                  ),
+            },
+          ));
     }
     if (action is RequestRetrieveOne<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
@@ -66,13 +84,31 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
     if (action is SuccessUpdateOne<T> || action is SuccessRetrieveOne<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       newIds[adapter.getId(action.entity)] = false;
-      return this
-          .adapter
-          .upsertOne(action.entity, state.copyWith(loadingIds: newIds));
+      return this.adapter.upsertOne(
+          action.entity,
+          state.copyWith(
+            loadingIds: newIds,
+            updateTimes: <String, DateTime>{
+              ...state.updateTimes,
+              adapter.getId(action.entity): DateTime.now()
+            },
+          ));
     }
     if (action is SuccessRetrieveAll<T>) {
-      return this.adapter.upsertMany(action.entities,
-          state.copyWith(loadingAll: false, entities: {}, ids: []));
+      return this.adapter.upsertMany(
+            action.entities,
+            state.copyWith(
+              loadingAll: false,
+              entities: {},
+              ids: [],
+              updateTimes: action.entities.asMap().map<String, DateTime>(
+                    (key, entity) => MapEntry<String, DateTime>(
+                      adapter.getId(entity),
+                      DateTime.now(),
+                    ),
+                  ),
+            ),
+          );
     }
     if (action is RequestUpdateMany<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
@@ -108,7 +144,19 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
         newIds[adapter.getId(entity)] = false;
       }
       return adapter.updateMany(
-          action.entities, state.copyWith(loadingIds: newIds));
+          action.entities,
+          state.copyWith(
+            loadingIds: newIds,
+            updateTimes: <String, DateTime>{
+              ...state.updateTimes,
+              ...action.entities.asMap().map<String, DateTime>(
+                    (key, entity) => MapEntry<String, DateTime>(
+                      adapter.getId(entity),
+                      DateTime.now(),
+                    ),
+                  ),
+            },
+          ));
     }
     if (action is SuccessDeleteOne<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);

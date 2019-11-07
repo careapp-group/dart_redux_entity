@@ -5,7 +5,7 @@ author: Michael Marner <michael@20papercups.net>
 homepage:
 
 environment:
-  sdk: '>=2.1.0 <3.0.0'
+  sdk: '>=2.2.2 <3.0.0'
 
 dependencies:
   redux: ^3.0.0
