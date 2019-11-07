@@ -94,6 +94,14 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
             },
           ));
     }
+    if (action is SuccessRetrieveOneFromCache<T>) {
+      Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
+      newIds[adapter.getId(action.entity)] = false;
+      return state.copyWith(
+        loadingIds: newIds,
+      );
+    }
+
     if (action is SuccessRetrieveAll<T>) {
       return this.adapter.upsertMany(
             action.entities,

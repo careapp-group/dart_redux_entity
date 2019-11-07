@@ -42,6 +42,13 @@ class SuccessRetrieveOne<T> {
   final T entity;
 }
 
+/// A recent copy of the entity was already in the store
+/// so returning with the cached copy
+class SuccessRetrieveOneFromCache<T> {
+  SuccessRetrieveOneFromCache(this.entity);
+  final T entity;
+}
+
 class FailRetrieveOne<T> {
   FailRetrieveOne({this.id, this.error});
   final String id;
