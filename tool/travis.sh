@@ -11,12 +11,8 @@ set -e
 pub get
 pub global activate coverage
 
-# Run the tests.
-echo "Running tests..."
-pub run test --reporter expanded
-
 # Gather coverage and upload to Coveralls.
-OBS_PORT=9292
+OBS_PORT=41031
 echo "Collecting coverage on port $OBS_PORT..."
 
 # Run the coverage collector to generate the JSON coverage report.
@@ -28,10 +24,10 @@ pub global run coverage:collect_coverage \
 
 # Start tests in one VM.
 dart \
-  --disable-service-auth-codes
+  --disable-service-auth-codes \
   --enable-vm-service=$OBS_PORT \
   --pause-isolates-on-exit \
-  test/test_all.dart
+  test/test_all.dart 
 
 
 echo "Generating LCOV report..."
