@@ -4,7 +4,8 @@ class EntityState<T> {
   const EntityState({
     this.entities = const {},
     this.ids = const [],
-  });
+  })  : assert(entities != null),
+        assert(ids != null);
 
   final Map<String, T> entities;
   final List<String> ids;
