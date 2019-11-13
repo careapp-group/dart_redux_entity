@@ -63,9 +63,10 @@ class RemoteEntityState<T> extends EntityState<T> {
   ) =>
       RemoteEntityState(
         entities: (json['entities'] as Map<String, dynamic>).map(
-          (key, props) => MapEntry<String, T>(key, deserializer(props)),
-        ),
-        ids: List<String>.from(json['ids']),
+              (key, props) => MapEntry<String, T>(key, deserializer(props)),
+            ) ??
+            {},
+        ids: List<String>.from(json['ids']) ?? [],
         loadingAll: json['loadingAll'] ?? false,
         loadingIds: Map<String, bool>.from(json['loadingIds']),
         updateTimes: json['updateTimes'].map<String, DateTime>(

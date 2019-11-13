@@ -1,72 +1,72 @@
 // Crud
 class RequestCreateOne<T> {
-  RequestCreateOne(this.entity);
+  const RequestCreateOne(this.entity);
   final T entity;
 }
 
 class SuccessCreateOne<T> {
-  SuccessCreateOne(this.entity);
+  const SuccessCreateOne(this.entity);
   final T entity;
 }
 
 class FailCreateOne<T> {
-  FailCreateOne({this.entity, this.error});
+  const FailCreateOne({this.entity, this.error});
   final T entity;
   final dynamic error;
 }
 
 class RequestCreateMany<T> {
-  RequestCreateMany(this.entities);
+  const RequestCreateMany(this.entities);
   final List<T> entities;
 }
 
 class SuccessCreateMany<T> {
-  SuccessCreateMany(this.entities);
+  const SuccessCreateMany(this.entities);
   final List<T> entities;
 }
 
 class FailCreateMany<T> {
-  FailCreateMany({this.entities, this.error});
+  const FailCreateMany({this.entities, this.error});
   final List<T> entities;
   final dynamic error;
 }
 
 // cRud
 class RequestRetrieveOne<T> {
-  RequestRetrieveOne(this.id);
+  const RequestRetrieveOne(this.id);
   final String id;
 }
 
 class SuccessRetrieveOne<T> {
-  SuccessRetrieveOne(this.entity);
+  const SuccessRetrieveOne(this.entity);
   final T entity;
 }
 
 /// A recent copy of the entity was already in the store
 /// so returning with the cached copy
 class SuccessRetrieveOneFromCache<T> {
-  SuccessRetrieveOneFromCache(this.entity);
+  const SuccessRetrieveOneFromCache(this.entity);
   final T entity;
 }
 
 class FailRetrieveOne<T> {
-  FailRetrieveOne({this.id, this.error});
+  const FailRetrieveOne({this.id, this.error});
   final String id;
   final dynamic error;
 }
 
 class RequestRetrieveMany<T> {
-  RequestRetrieveMany(this.ids);
+  const RequestRetrieveMany(this.ids);
   final List<String> ids;
 }
 
 class SuccessRetrieveMany<T> {
-  SuccessRetrieveMany(this.entities);
+  const SuccessRetrieveMany(this.entities);
   final List<T> entities;
 }
 
 class FailRetrieveMany<T> {
-  FailRetrieveMany(this.ids, this.error);
+  const FailRetrieveMany(this.ids, this.error);
   final List<String> ids;
   final dynamic error;
 }
@@ -74,44 +74,44 @@ class FailRetrieveMany<T> {
 class RequestRetrieveAll<T> {}
 
 class SuccessRetrieveAll<T> {
-  SuccessRetrieveAll(this.entities);
+  const SuccessRetrieveAll(this.entities);
   final List<T> entities;
 }
 
 class FailRetrieveAll<T> {
-  FailRetrieveAll(this.error);
+  const FailRetrieveAll(this.error);
   final dynamic error;
 }
 
 // crUdclass RequestCreateOne<T> {
 class RequestUpdateOne<T> {
-  RequestUpdateOne(this.entity);
+  const RequestUpdateOne(this.entity);
   final T entity;
 }
 
 class SuccessUpdateOne<T> {
-  SuccessUpdateOne(this.entity);
+  const SuccessUpdateOne(this.entity);
   final T entity;
 }
 
 class FailUpdateOne<T> {
-  FailUpdateOne({this.entity, this.error});
+  const FailUpdateOne({this.entity, this.error});
   final T entity;
   final dynamic error;
 }
 
 class RequestUpdateMany<T> {
-  RequestUpdateMany(this.entities);
+  const RequestUpdateMany(this.entities);
   final List<T> entities;
 }
 
 class SuccessUpdateMany<T> {
-  SuccessUpdateMany(this.entities);
+  const SuccessUpdateMany(this.entities);
   final List<T> entities;
 }
 
 class FailUpdateMany<T> {
-  FailUpdateMany({this.entities, this.error});
+  const FailUpdateMany({this.entities, this.error});
   final List<T> entities;
   final dynamic error;
 }
@@ -119,33 +119,33 @@ class FailUpdateMany<T> {
 // cruD
 
 class RequestDeleteOne<T> {
-  RequestDeleteOne(this.id);
+  const RequestDeleteOne(this.id);
   final String id;
 }
 
 class SuccessDeleteOne<T> {
-  SuccessDeleteOne(this.id);
+  const SuccessDeleteOne(this.id);
   final String id;
 }
 
 class FailDeleteOne<T> {
-  FailDeleteOne({this.id, this.error});
+  const FailDeleteOne({this.id, this.error});
   final String id;
   final dynamic error;
 }
 
 class RequestDeleteMany<T> {
-  RequestDeleteMany(this.ids);
+  const RequestDeleteMany(this.ids);
   final List<String> ids;
 }
 
 class SuccessDeleteMany<T> {
-  SuccessDeleteMany(this.ids);
+  const SuccessDeleteMany(this.ids);
   final List<String> ids;
 }
 
 class FailDeleteMany<T> {
-  FailDeleteMany({this.ids, this.error});
+  const FailDeleteMany({this.ids, this.error});
   final List<String> ids;
   final dynamic error;
 }

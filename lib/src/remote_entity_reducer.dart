@@ -1,4 +1,3 @@
-import './entity_state.dart';
 import './typedefs.dart';
 import './unsorted_entity_state_adapter.dart';
 import './remote_entity_actions.dart';
