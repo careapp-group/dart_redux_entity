@@ -5,7 +5,7 @@ author: Michael Marner <michael@20papercups.net>
 homepage:
 
 environment:
-  sdk: '>=2.2.2 <3.0.0'
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   redux: ^3.0.0
@@ -13,3 +13,5 @@ dependencies:
 dev_dependencies:
   mockito: ^4.1.1
   test: ^1.6.0
+  faker: ^1.1.1
+  uuid: ^2.0.4

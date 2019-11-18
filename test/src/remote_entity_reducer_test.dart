@@ -1,8 +1,24 @@
+import 'package:faker/faker.dart';
 import 'package:redux_entity/redux_entity.dart';
+import 'package:redux_entity/src/remote_entity_reducer_tester.dart';
 import 'package:test/test.dart';
+import 'package:uuid/uuid.dart';
 import '../fixtures/book.dart';
 
 void main() {
+  group(RemoteEntityReducerTester, () {
+    final EntityFactory generator =
+        () => BookModel(id: Uuid().v4(), title: faker.lorem.sentence());
+    final RemoteEntityReducer<RemoteEntityState<BookModel>, BookModel> reducer =
+        RemoteEntityReducer<RemoteEntityState<BookModel>, BookModel>();
+    final tester = RemoteEntityReducerTester<
+        RemoteEntityReducer<RemoteEntityState<BookModel>, BookModel>,
+        RemoteEntityState<BookModel>,
+        BookModel>();
+
+    return tester.testAll(reducer, generator, RemoteEntityState<BookModel>());
+  });
+
   group(RemoteEntityReducer, () {
     final RemoteEntityReducer<RemoteEntityState<BookModel>, BookModel> reducer =
         RemoteEntityReducer<RemoteEntityState<BookModel>, BookModel>();
