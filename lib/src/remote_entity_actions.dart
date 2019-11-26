@@ -33,8 +33,13 @@ class FailCreateMany<T> {
 
 // cRud
 class RequestRetrieveOne<T> {
-  const RequestRetrieveOne(this.id);
+  const RequestRetrieveOne(this.id, {this.forceRefresh = false});
+
+  /// The ID of the entity to fetch
   final String id;
+
+  /// Whether to force a refresh (if you are using a caching mechanism)
+  final bool forceRefresh;
 }
 
 class SuccessRetrieveOne<T> {
