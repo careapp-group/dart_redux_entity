@@ -1,14 +1,13 @@
 name: redux_entity
-description: Library for maintaining collections in a Redux store
+description: Library for maintaining collections in a Redux store. Based on @ngrx/entity.
 version: 0.0.1
-author: Michael Marner <michael@20papercups.net>
 homepage:
 
 environment:
-  sdk: '>=2.2.2 <3.0.0'
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
-  redux: '>= 3.0.0 < 5.0.0'
+  redux: ">= 3.0.0 < 5.0.0"
 
 dev_dependencies:
   mockito: ^4.1.1
