@@ -114,8 +114,14 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
                       DateTime.now(),
                     ),
                   ),
+              lastFetchAllTime: DateTime.now(),
             ),
           );
+    }
+    if (action is SuccessRetrieveAllFromCache<T>) {
+      return state.copyWith(
+        loadingAll: false,
+      );
     }
     if (action is RequestUpdateMany<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);

@@ -4,6 +4,7 @@ class RemoteEntityState<T> extends EntityState<T> {
   final bool loadingAll;
   final Map<String, bool> loadingIds;
   final Map<String, DateTime> updateTimes;
+  final DateTime lastFetchAllTime;
   final bool creating;
   final dynamic error;
 
@@ -13,6 +14,7 @@ class RemoteEntityState<T> extends EntityState<T> {
     this.loadingIds = const {},
     this.creating = false,
     this.updateTimes = const {},
+    this.lastFetchAllTime,
     // EntityState properties
     Map<String, T> entities = const {},
     List<String> ids = const [],
@@ -27,8 +29,9 @@ class RemoteEntityState<T> extends EntityState<T> {
     // EntityState properties
     Map<String, T> entities,
     List<String> ids,
-    Map<String, DateTime> updateTimes,
     // our properties
+    Map<String, DateTime> updateTimes,
+    DateTime lastFetchAllTime,
     bool loadingAll,
     Map<String, bool> loadingIds,
     bool creating,
@@ -38,6 +41,7 @@ class RemoteEntityState<T> extends EntityState<T> {
         loadingAll: loadingAll ?? this.loadingAll,
         loadingIds: loadingIds ?? this.loadingIds,
         updateTimes: updateTimes ?? this.updateTimes,
+        lastFetchAllTime: lastFetchAllTime ?? this.lastFetchAllTime,
         creating: creating ?? this.creating,
         error: error ?? this.error,
         entities: entities ?? this.entities,
@@ -52,6 +56,9 @@ class RemoteEntityState<T> extends EntityState<T> {
         'loadingIds': this.loadingIds,
         'updateTimes': this.updateTimes.map<String, String>(
             (key, val) => MapEntry<String, String>(key, val.toIso8601String())),
+        'lastFetchAllTime': this.lastFetchAllTime != null
+            ? this.lastFetchAllTime.toIso8601String()
+            : null,
         'creating': this.creating,
         'error': this.error,
       });
@@ -71,6 +78,9 @@ class RemoteEntityState<T> extends EntityState<T> {
         loadingIds: Map<String, bool>.from(json['loadingIds']),
         updateTimes: json['updateTimes'].map<String, DateTime>(
             (key, val) => MapEntry<String, DateTime>(key, DateTime.parse(val))),
+        lastFetchAllTime: json['lastFetchAllTime'] != null
+            ? DateTime.parse(json['lastFetchAllTime'])
+            : null,
         creating: json['creating'],
         error: json['error'],
       );

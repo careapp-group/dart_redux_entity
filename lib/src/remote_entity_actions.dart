@@ -109,10 +109,31 @@ class FailRetrieveMany<T> {
   Map<String, dynamic> toJson() => {'ids': ids, 'error': error};
 }
 
-class RequestRetrieveAll<T> {}
+class RequestRetrieveAll<T> {
+  const RequestRetrieveAll({
+    this.forceRefresh = false,
+  });
+
+  /// Whether to force a refresh (if you are using a caching mechanism)
+  final bool forceRefresh;
+
+  Map<String, dynamic> toJson() => {
+        'forceRefresh': forceRefresh,
+      };
+}
 
 class SuccessRetrieveAll<T> {
   const SuccessRetrieveAll(this.entities);
+  final List<T> entities;
+  Map<String, dynamic> toJson() => {
+        'entities': entities,
+      };
+}
+
+/// A recent copy of the entity was already in the store
+/// so returning with the cached copy
+class SuccessRetrieveAllFromCache<T> {
+  const SuccessRetrieveAllFromCache(this.entities);
   final List<T> entities;
   Map<String, dynamic> toJson() => {
         'entities': entities,
