@@ -1,4 +1,8 @@
-typedef Deserializer<T> = T Function(Map<String, dynamic>);
+/**
+ * A function that can deserialize an entity T from the JSON
+ * representation
+ */
+typedef Deserializer<T> = T Function(dynamic);
 
 class EntityState<T> {
   const EntityState({
