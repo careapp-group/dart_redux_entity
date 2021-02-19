@@ -1,3 +1,7 @@
+## [0.2.0]
+
+- Implement LocalEntityReducer
+
 ## [0.1.1]
 
 - Relax type for Deserializer, makes possible to store list entities
