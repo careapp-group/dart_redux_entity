@@ -10,10 +10,10 @@ Operation<V, R> createStateOperator<V, R>(Mutator<R, V> mutator) {
     );
     final didMutate = mutator(arg, clone);
     if (didMutate == DidMutate.both) {
-      return state.copyWith(ids: clone.ids, entities: clone.entities);
+      return state.copyWith(ids: clone.ids, entities: clone.entities) as S;
     }
     if (didMutate == DidMutate.entitiesOnly) {
-      return state.copyWith(entities: clone.entities);
+      return state.copyWith(entities: clone.entities) as S;
     }
     return state;
   }

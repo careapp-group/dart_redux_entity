@@ -13,7 +13,7 @@ class UnsortedEntityStateAdapter<T> implements EntityStateAdapter<T> {
     this.selectId,
   });
 
-  final IdSelector<T> selectId;
+  final IdSelector<T>? selectId;
 
   S addOne<S extends EntityState<T>>(T entity, S state) {
     final op = createStateOperator<T, T>(_addOneMutably);
@@ -42,7 +42,7 @@ class UnsortedEntityStateAdapter<T> implements EntityStateAdapter<T> {
   }
 
   S removeAll<S extends EntityState<T>>(S state) {
-    return state.copyWith(ids: [], entities: {});
+    return state.copyWith(ids: [], entities: {}) as S;
   }
 
   S updateOne<S extends EntityState<T>>(T item, S state) {
@@ -113,7 +113,7 @@ class UnsortedEntityStateAdapter<T> implements EntityStateAdapter<T> {
 
   String getId(T item) {
     if (selectId != null) {
-      return selectId(item);
+      return selectId!(item);
     }
     return (item as dynamic).id;
   }

@@ -7,17 +7,17 @@ import './remote_entity_state.dart';
 class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
     extends ReducerClass<S> {
   RemoteEntityReducer({
-    IdSelector<T> selectId,
+    IdSelector<T>? selectId,
   }) : adapter = UnsortedEntityStateAdapter<T>(selectId: selectId);
 
   final UnsortedEntityStateAdapter<T> adapter;
 
   S call(S state, action) {
     if (action is RequestCreateOne<T> || action is RequestCreateMany<T>) {
-      return state.copyWith(creating: true, error: false);
+      return state.copyWith(creating: true, error: false) as S;
     }
     if (action is FailCreateOne<T> || action is FailCreateMany<T>) {
-      return state.copyWith(creating: false, error: action.error);
+      return state.copyWith(creating: false, error: action.error) as S;
     }
     if (action is SuccessCreateOne<T>) {
       return this.adapter.addOne(
@@ -28,7 +28,7 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
                 ...state.updateTimes,
                 adapter.getId(action.entity): DateTime.now()
               },
-            ),
+            ) as S,
           );
     }
     if (action is SuccessCreateMany<T>) {
@@ -45,39 +45,39 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
                     ),
                   ),
             },
-          ));
+          ) as S);
     }
     if (action is RequestRetrieveOne<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       newIds[action.id] = true;
-      return state.copyWith(loadingIds: newIds, error: false);
+      return state.copyWith(loadingIds: newIds, error: false) as S;
     }
     if (action is RequestUpdateOne<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       newIds[adapter.getId(action.entity)] = true;
-      return state.copyWith(loadingIds: newIds, error: false);
+      return state.copyWith(loadingIds: newIds, error: false) as S;
     }
     if (action is RequestDeleteOne<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       newIds[action.id] = true;
-      return state.copyWith(loadingIds: newIds, error: false);
+      return state.copyWith(loadingIds: newIds, error: false) as S;
     }
     if (action is RequestRetrieveAll<T>) {
-      return state.copyWith(loadingAll: true, error: false);
+      return state.copyWith(loadingAll: true, error: false) as S;
     }
     if (action is FailUpdateOne<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       newIds[adapter.getId(action.entity)] = false;
-      return state.copyWith(loadingIds: newIds, error: action.error);
+      return state.copyWith(loadingIds: newIds, error: action.error) as S;
     }
     if (action is FailRetrieveOne<T> || action is FailDeleteOne<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       newIds[action.id] = false;
-      return state.copyWith(loadingIds: newIds, error: action.error);
+      return state.copyWith(loadingIds: newIds, error: action.error) as S;
     }
 
     if (action is FailRetrieveAll<T>) {
-      return state.copyWith(loadingAll: false, error: action.error);
+      return state.copyWith(loadingAll: false, error: action.error) as S;
     }
 
     if (action is SuccessUpdateOne<T> || action is SuccessRetrieveOne<T>) {
@@ -91,14 +91,14 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
               ...state.updateTimes,
               adapter.getId(action.entity): DateTime.now()
             },
-          ));
+          ) as S);
     }
     if (action is SuccessRetrieveOneFromCache<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       newIds[adapter.getId(action.entity)] = false;
       return state.copyWith(
         loadingIds: newIds,
-      );
+      ) as S;
     }
 
     if (action is SuccessRetrieveAll<T>) {
@@ -115,41 +115,41 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
                     ),
                   ),
               lastFetchAllTime: DateTime.now(),
-            ),
+            ) as S,
           );
     }
     if (action is SuccessRetrieveAllFromCache<T>) {
       return state.copyWith(
         loadingAll: false,
-      );
+      ) as S;
     }
     if (action is RequestUpdateMany<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       for (T entity in action.entities) {
         newIds[adapter.getId(entity)] = true;
       }
-      return state.copyWith(loadingIds: newIds, error: false);
+      return state.copyWith(loadingIds: newIds, error: false) as S;
     }
     if (action is RequestDeleteMany<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       for (String id in action.ids) {
         newIds[id] = true;
       }
-      return state.copyWith(loadingIds: newIds, error: false);
+      return state.copyWith(loadingIds: newIds, error: false) as S;
     }
     if (action is FailUpdateMany<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       for (T entity in action.entities) {
         newIds[adapter.getId(entity)] = false;
       }
-      return state.copyWith(loadingIds: newIds, error: action.error);
+      return state.copyWith(loadingIds: newIds, error: action.error) as S;
     }
     if (action is FailDeleteMany<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       for (String id in action.ids) {
         newIds[id] = false;
       }
-      return state.copyWith(loadingIds: newIds, error: action.error);
+      return state.copyWith(loadingIds: newIds, error: action.error) as S;
     }
     if (action is SuccessUpdateMany<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
@@ -169,19 +169,21 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
                     ),
                   ),
             },
-          ));
+          ) as S);
     }
     if (action is SuccessDeleteOne<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       newIds[action.id] = false;
-      return adapter.removeOne(action.id, state.copyWith(loadingIds: newIds));
+      return adapter.removeOne(
+          action.id, state.copyWith(loadingIds: newIds) as S);
     }
     if (action is SuccessDeleteMany<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       for (String id in action.ids) {
         newIds[id] = false;
       }
-      return adapter.removeMany(action.ids, state.copyWith(loadingIds: newIds));
+      return adapter.removeMany(
+          action.ids, state.copyWith(loadingIds: newIds) as S);
     }
 
     return state;

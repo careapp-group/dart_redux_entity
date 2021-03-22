@@ -8,8 +8,8 @@ class MockStore extends Mock implements Store {}
 
 void main() {
   group(RemoteEntityFacade, () {
-    MockStore store;
-    RemoteEntityFacade facade;
+    late MockStore store;
+    late RemoteEntityFacade facade;
 
     setUp(() {
       store = MockStore();

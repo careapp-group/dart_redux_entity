@@ -1,7 +1,7 @@
 class BookModel {
   const BookModel({this.id, this.title});
-  final String id;
-  final String title;
+  final String? id;
+  final String? title;
 
   String toString() {
     return '$id : $title';

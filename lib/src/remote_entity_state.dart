@@ -4,7 +4,7 @@ class RemoteEntityState<T> extends EntityState<T> {
   final bool loadingAll;
   final Map<String, bool> loadingIds;
   final Map<String, DateTime> updateTimes;
-  final DateTime lastFetchAllTime;
+  final DateTime? lastFetchAllTime;
   final bool creating;
   final dynamic error;
 
@@ -27,14 +27,14 @@ class RemoteEntityState<T> extends EntityState<T> {
 
   RemoteEntityState<T> copyWith({
     // EntityState properties
-    Map<String, T> entities,
-    List<String> ids,
+    Map<String, T>? entities,
+    List<String>? ids,
     // our properties
-    Map<String, DateTime> updateTimes,
-    DateTime lastFetchAllTime,
-    bool loadingAll,
-    Map<String, bool> loadingIds,
-    bool creating,
+    Map<String, DateTime>? updateTimes,
+    DateTime? lastFetchAllTime,
+    bool? loadingAll,
+    Map<String, bool>? loadingIds,
+    bool? creating,
     dynamic error,
   }) {
     return RemoteEntityState<T>(
@@ -57,7 +57,7 @@ class RemoteEntityState<T> extends EntityState<T> {
         'updateTimes': this.updateTimes.map<String, String>(
             (key, val) => MapEntry<String, String>(key, val.toIso8601String())),
         'lastFetchAllTime': this.lastFetchAllTime != null
-            ? this.lastFetchAllTime.toIso8601String()
+            ? this.lastFetchAllTime?.toIso8601String()
             : null,
         'creating': this.creating,
         'error': this.error,
@@ -69,11 +69,11 @@ class RemoteEntityState<T> extends EntityState<T> {
     Deserializer<T> deserializer,
   ) =>
       RemoteEntityState(
-        entities: (json['entities'] as Map<String, dynamic>).map(
+        entities: (json['entities']).map(
               (key, props) => MapEntry<String, T>(key, deserializer(props)),
             ) ??
             {},
-        ids: List<String>.from(json['ids']) ?? [],
+        ids: json['ids'] != null ? List<String>.from(json['ids']) : [],
         loadingAll: json['loadingAll'] ?? false,
         loadingIds: Map<String, bool>.from(json['loadingIds']),
         updateTimes: json['updateTimes'].map<String, DateTime>(

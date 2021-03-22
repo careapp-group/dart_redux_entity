@@ -4,12 +4,12 @@ import '../fixtures/book.dart';
 
 void main() {
   group(UnsortedEntityStateAdapter, () {
-    EntityStateAdapter<BookModel> adapter;
-    EntityState<BookModel> state;
+    late EntityStateAdapter<BookModel> adapter;
+    late EntityState<BookModel> state;
 
     setUp(() {
       adapter = UnsortedEntityStateAdapter<BookModel>(
-          selectId: (BookModel book) => book.id);
+          selectId: (BookModel book) => book.id as String);
 
       state = EntityState<BookModel>();
     });
@@ -57,7 +57,8 @@ void main() {
     test('should let you add remove an entity from the state', () {
       final withOneEntity = adapter.addOne(TheGreatGatsby, state);
 
-      final withoutOne = adapter.removeOne(TheGreatGatsby.id, withOneEntity);
+      final withoutOne =
+          adapter.removeOne(TheGreatGatsby.id as String, withOneEntity);
 
       expect(withoutOne.ids.length, 0);
       expect(withoutOne.entities.length, 0);
@@ -67,8 +68,9 @@ void main() {
       final withAll =
           adapter.addAll([TheGreatGatsby, AClockworkOrange, AnimalFarm], state);
 
-      final withoutMany =
-          adapter.removeMany([TheGreatGatsby.id, AClockworkOrange.id], withAll);
+      final withoutMany = adapter.removeMany(
+          [TheGreatGatsby.id as String, AClockworkOrange.id as String],
+          withAll);
 
       expect(withoutMany.ids.length, 1);
       expect(withoutMany.entities.length, 1);

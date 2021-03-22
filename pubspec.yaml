@@ -1,17 +1,17 @@
 name: redux_entity
 description: Library for maintaining collections in a Redux store. Based on @ngrx/entity.
 repository: https://github.com/careapp-inc/dart_redux_entity
-version: 0.2.0
+version: 1.0.0
 homepage: https://github.com/careapp-inc/dart_redux_entity
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  redux: ">= 3.0.0 < 5.0.0"
-  test: ^1.6.0
+  redux: ^5.0.0
+  test: ^1.16.8
 
 dev_dependencies:
-  mockito: ^4.1.1
-  faker: ^1.1.1
-  uuid: ^2.0.4
+  mockito: ^5.0.2
+  faker: ^2.0.0-rc.2
+  uuid: ^3.0.1
