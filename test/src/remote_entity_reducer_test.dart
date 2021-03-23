@@ -7,7 +7,7 @@ import '../fixtures/book.dart';
 
 void main() {
   group(RemoteEntityReducerTester, () {
-    final EntityFactory generator =
+    final EntityFactory<BookModel> generator =
         () => BookModel(id: Uuid().v4(), title: faker.lorem.sentence());
     final RemoteEntityReducer<RemoteEntityState<BookModel>, BookModel> reducer =
         RemoteEntityReducer<RemoteEntityState<BookModel>, BookModel>();
@@ -46,7 +46,7 @@ void main() {
       test('new item should be added to store', () {
         final result = reducer.call(new RemoteEntityState<BookModel>(),
             SuccessCreateOne<BookModel>(BookModel(id: '2345', title: 'test')));
-        expect(result.entities['2345'].title, 'test');
+        expect(result.entities['2345']!.title, 'test');
       });
 
       test('creating should be false', () {
@@ -98,8 +98,8 @@ void main() {
               BookModel(id: 'a', title: 'test'),
               BookModel(id: 'b', title: 'asdf')
             ]));
-        expect(result.entities['a'].title, 'test');
-        expect(result.entities['b'].title, 'asdf');
+        expect(result.entities['a']!.title, 'test');
+        expect(result.entities['b']!.title, 'asdf');
       });
       test('creating should be false', () {
         final result = reducer.call(
@@ -155,7 +155,7 @@ void main() {
             new RemoteEntityState(loadingIds: {'a': true}),
             new SuccessRetrieveOne<BookModel>(
                 BookModel(id: 'a', title: 'test')));
-        expect(result.entities['a'].title, 'test');
+        expect(result.entities['a']!.title, 'test');
       });
       test('Should set loading for element false', () {
         final result = reducer.call(
@@ -205,9 +205,9 @@ void main() {
               BookModel(id: 'b', title: 'testb'),
               BookModel(id: 'c', title: 'testc')
             ]));
-        expect(result.entities['a'].title, 'test');
-        expect(result.entities['b'].title, 'testb');
-        expect(result.entities['c'].title, 'testc');
+        expect(result.entities['a']!.title, 'test');
+        expect(result.entities['b']!.title, 'testb');
+        expect(result.entities['c']!.title, 'testc');
       });
       test('Should set loadingAll false', () {
         final result = reducer.call(
@@ -261,7 +261,7 @@ void main() {
                 entities: {'a': BookModel(id: 'a', title: 'asdf')},
                 ids: ['a']),
             SuccessUpdateOne(BookModel(id: 'a', title: 'test')));
-        expect(result.entities['a'].title, 'test');
+        expect(result.entities['a']!.title, 'test');
       });
       test('Should set loading for element false', () {
         final result = reducer.call(
@@ -355,9 +355,9 @@ void main() {
             ],
           ),
         );
-        expect(result.entities['a'].title, 'testa');
-        expect(result.entities['b'].title, 'testb');
-        expect(result.entities['c'].title, 'testc');
+        expect(result.entities['a']!.title, 'testa');
+        expect(result.entities['b']!.title, 'testb');
+        expect(result.entities['c']!.title, 'testc');
       });
       test('Should set loading for each element false', () {
         final result = reducer.call(

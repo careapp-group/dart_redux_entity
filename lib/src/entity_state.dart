@@ -14,9 +14,9 @@ class EntityState<T> {
   final Map<String, T> entities;
   final List<String> ids;
 
-  EntityState copyWith({
-    Map<String, T> entities,
-    List<String> ids,
+  EntityState<T> copyWith({
+    Map<String, T>? entities,
+    List<String>? ids,
   }) {
     return new EntityState<T>(
       entities: entities ?? this.entities,

@@ -13,7 +13,7 @@ void main() {
       test('new item should be added to store', () {
         final result = reducer.call(new EntityState<BookModel>(),
             CreateOne<BookModel>(BookModel(id: '2345', title: 'test')));
-        expect(result.entities['2345'].title, 'test');
+        expect(result.entities['2345']!.title, 'test');
       });
     });
     group(UpdateOne, () {
@@ -22,7 +22,7 @@ void main() {
             EntityState<BookModel>(
                 entities: {'a': BookModel(id: 'a', title: 'asdf')}, ids: ['a']),
             UpdateOne(BookModel(id: 'a', title: 'test')));
-        expect(result.entities['a'].title, 'test');
+        expect(result.entities['a']!.title, 'test');
       });
     });
     group(DeleteOne, () {

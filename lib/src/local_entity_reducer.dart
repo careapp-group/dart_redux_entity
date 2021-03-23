@@ -7,7 +7,7 @@ import 'package:redux/redux.dart';
 
 class LocalEntityReducer<S extends EntityState<T>, T> extends ReducerClass<S> {
   LocalEntityReducer({
-    IdSelector<T> selectId,
+    IdSelector<T>? selectId,
   }) : adapter = UnsortedEntityStateAdapter<T>(selectId: selectId);
 
   final UnsortedEntityStateAdapter<T> adapter;

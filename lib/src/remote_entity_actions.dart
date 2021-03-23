@@ -16,9 +16,9 @@ class SuccessCreateOne<T> {
 }
 
 class FailCreateOne<T> {
-  const FailCreateOne({this.entity, this.error});
+  const FailCreateOne({required this.entity, this.error});
   final T entity;
-  final dynamic error;
+  final dynamic? error;
   Map<String, dynamic> toJson() => {'entity': entity, 'error': error};
 }
 
@@ -39,7 +39,7 @@ class SuccessCreateMany<T> {
 }
 
 class FailCreateMany<T> {
-  const FailCreateMany({this.entities, this.error});
+  const FailCreateMany({required this.entities, this.error});
   final List<T> entities;
   final dynamic error;
   Map<String, dynamic> toJson() => {'entites': entities, 'error': error};
@@ -80,7 +80,10 @@ class SuccessRetrieveOneFromCache<T> {
 }
 
 class FailRetrieveOne<T> {
-  const FailRetrieveOne({this.id, this.error});
+  const FailRetrieveOne({
+    required this.id,
+    this.error,
+  });
   final String id;
   final dynamic error;
   Map<String, dynamic> toJson() => {'id': id, 'error': error};
@@ -166,7 +169,7 @@ class SuccessUpdateOne<T> {
 }
 
 class FailUpdateOne<T> {
-  const FailUpdateOne({this.entity, this.error});
+  const FailUpdateOne({required this.entity, this.error});
   final T entity;
   final dynamic error;
   Map<String, dynamic> toJson() => {'entity': entity, 'error': error};
@@ -189,7 +192,7 @@ class SuccessUpdateMany<T> {
 }
 
 class FailUpdateMany<T> {
-  const FailUpdateMany({this.entities, this.error});
+  const FailUpdateMany({required this.entities, this.error});
   final List<T> entities;
   final dynamic error;
   Map<String, dynamic> toJson() => {'entities': entities, 'error': error};
@@ -214,9 +217,9 @@ class SuccessDeleteOne<T> {
 }
 
 class FailDeleteOne<T> {
-  const FailDeleteOne({this.id, this.error});
+  const FailDeleteOne({required this.id, this.error});
   final String id;
-  final dynamic error;
+  final dynamic? error;
   Map<String, dynamic> toJson() => {'id': id, 'error': error};
 }
 
@@ -237,7 +240,7 @@ class SuccessDeleteMany<T> {
 }
 
 class FailDeleteMany<T> {
-  const FailDeleteMany({this.ids, this.error});
+  const FailDeleteMany({required this.ids, this.error});
   final List<String> ids;
   final dynamic error;
   Map<String, dynamic> toJson() => {
