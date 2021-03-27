@@ -1,3 +1,7 @@
+## [1.0.1]
+
+- Reduce version requirement for `test` package
+
 ## [1.0.0]
 
 - Sound null safety
