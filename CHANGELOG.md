@@ -1,3 +1,7 @@
+## [1.0.3]
+
+Fixes a type bug where RemoteEntityState.fromJson() would fail.
+
 ## [1.0.2]
 
 - Further reduce version requirement for `test` package to 1.16.0, the first null-safe version

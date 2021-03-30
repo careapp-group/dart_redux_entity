@@ -69,7 +69,7 @@ class RemoteEntityState<T> extends EntityState<T> {
     Deserializer<T> deserializer,
   ) =>
       RemoteEntityState(
-        entities: (json['entities']).map(
+        entities: (json['entities']).map<String, T>(
               (key, props) => MapEntry<String, T>(key, deserializer(props)),
             ) ??
             {},
