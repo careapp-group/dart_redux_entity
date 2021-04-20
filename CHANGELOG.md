@@ -1,6 +1,10 @@
+## [1.0.4]
+
+- Changes FailCreateOne.entity to be optional
+
 ## [1.0.3]
 
-Fixes a type bug where RemoteEntityState.fromJson() would fail.
+- Fixes a type bug where RemoteEntityState.fromJson() would fail.
 
 ## [1.0.2]
 
