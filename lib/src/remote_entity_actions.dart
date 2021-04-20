@@ -16,8 +16,8 @@ class SuccessCreateOne<T> {
 }
 
 class FailCreateOne<T> {
-  const FailCreateOne({required this.entity, this.error});
-  final T entity;
+  const FailCreateOne({this.entity, this.error});
+  final T? entity;
   final dynamic? error;
   Map<String, dynamic> toJson() => {'entity': entity, 'error': error};
 }
