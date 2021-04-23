@@ -5,6 +5,12 @@
 
 Tools for maintaining collections of objects in Redux stores. Aiming to be a close match to Angular's excellent [@ngrx/entity](https://github.com/ngrx/platform/tree/master/modules/entity), with changes made mostly around the differences between Typescript and Dart.
 
+## Testing Utilities
+
+If you are creating your own reducers based on RemoteEntityReducer, it can be a lot of work to get good test coverage. You not only need to test the reducer against your own actions, but also ensure the existing functionality continues to work.
+
+To make things easier, I suggest copying [Remote Entity Reducer Tester](test/src/remote_entity_reducer_tester.dart) into your test suite. Use the tester to test that the existing functionality continues to work as you add your custom actions.
+
 ## Contributing
 
 Contributions are welcome! However,

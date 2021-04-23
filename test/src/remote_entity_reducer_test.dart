@@ -1,6 +1,6 @@
 import 'package:faker/faker.dart';
 import 'package:redux_entity/redux_entity.dart';
-import 'package:redux_entity/src/remote_entity_reducer_tester.dart';
+import 'remote_entity_reducer_tester.dart';
 import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 import '../fixtures/book.dart';
