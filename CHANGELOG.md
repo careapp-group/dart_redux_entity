@@ -1,3 +1,7 @@
+## [1.0.5]
+
+- Fixes pubspec to have test in dev dependencies
+
 ## [1.0.4]
 
 - Changes FailCreateOne.entity to be optional
