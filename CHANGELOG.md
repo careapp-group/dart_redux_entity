@@ -1,3 +1,7 @@
+## [1.1.1]
+
+- Fix a regression where `RequestCreateOne.entity` was renamed to `request`. Oops.
+
 ## [1.1.0]
 
 - Adds new Request actions for Create / Update that allows you to specify a request payload type that is different to the entity. This is useful for APIs where, for example, the payload required to create an object is a subset of the entity that is created. For example:

@@ -2,10 +2,10 @@
 
 /// Request creating an entity of type T with a request object of type R
 class RequestCreateOneWith<T, R> {
-  const RequestCreateOneWith(this.request);
-  final R request;
+  const RequestCreateOneWith(this.entity);
+  final R entity;
   Map<String, dynamic> toJson() => {
-        'request': request,
+        'entity': entity,
       };
 }
 
