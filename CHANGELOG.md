@@ -1,3 +1,21 @@
+## [1.1.0]
+
+- Adds new Request actions for Create / Update that allows you to specify a request payload type that is different to the entity. This is useful for APIs where, for example, the payload required to create an object is a subset of the entity that is created. For example:
+
+  ```dart
+  class RequestCreatePayload {
+    String name;
+  }
+  class Entity {
+    String id;
+    String name;
+  }
+
+  final action = RequestCreateOneWith<Entity, RequestCreatePayload>(RequestCreatePayload()..name = 'Michael');
+  ```
+
+  The way to read this is _Request Create One_ `Entity` _with_ `RequestCreatePayload`
+
 ## [1.0.5]
 
 - Fixes pubspec to have test in dev dependencies

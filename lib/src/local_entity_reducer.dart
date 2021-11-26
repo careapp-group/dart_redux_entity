@@ -1,8 +1,6 @@
 import 'package:redux_entity/redux_entity.dart';
-import 'package:redux_entity/src/local_entity_actions.dart';
 
 import './typedefs.dart';
-import './unsorted_entity_state_adapter.dart';
 import 'package:redux/redux.dart';
 
 class LocalEntityReducer<S extends EntityState<T>, T> extends ReducerClass<S> {

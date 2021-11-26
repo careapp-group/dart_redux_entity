@@ -1,10 +1,17 @@
 // Crud
-class RequestCreateOne<T> {
-  const RequestCreateOne(this.entity);
-  final T entity;
+
+/// Request creating an entity of type T with a request object of type R
+class RequestCreateOneWith<T, R> {
+  const RequestCreateOneWith(this.request);
+  final R request;
   Map<String, dynamic> toJson() => {
-        'entity': entity,
+        'request': request,
       };
+}
+
+/// Request creating an entity of type T with a T request
+class RequestCreateOne<T> extends RequestCreateOneWith<T, T> {
+  const RequestCreateOne(T entity) : super(entity);
 }
 
 class SuccessCreateOne<T> {
@@ -18,16 +25,20 @@ class SuccessCreateOne<T> {
 class FailCreateOne<T> {
   const FailCreateOne({this.entity, this.error});
   final T? entity;
-  final dynamic? error;
+  final dynamic error;
   Map<String, dynamic> toJson() => {'entity': entity, 'error': error};
 }
 
-class RequestCreateMany<T> {
-  const RequestCreateMany(this.entities);
-  final List<T> entities;
+class RequestCreateManyWith<T, R> {
+  const RequestCreateManyWith(this.entities);
+  final List<R> entities;
   Map<String, dynamic> toJson() => {
-        'entites': entities,
+        'entities': entities,
       };
+}
+
+class RequestCreateMany<T> extends RequestCreateManyWith<T, T> {
+  const RequestCreateMany(List<T> entities) : super(entities);
 }
 
 class SuccessCreateMany<T> {
@@ -152,12 +163,16 @@ class FailRetrieveAll<T> {
 }
 
 // crUdclass RequestCreateOne<T> {
-class RequestUpdateOne<T> {
-  const RequestUpdateOne(this.entity);
-  final T entity;
+class RequestUpdateOneWith<T, R> {
+  const RequestUpdateOneWith(this.entity);
+  final R entity;
   Map<String, dynamic> toJson() => {
         'entity': entity,
       };
+}
+
+class RequestUpdateOne<T> extends RequestUpdateOneWith<T, T> {
+  const RequestUpdateOne(T request) : super(request);
 }
 
 class SuccessUpdateOne<T> {
@@ -175,12 +190,16 @@ class FailUpdateOne<T> {
   Map<String, dynamic> toJson() => {'entity': entity, 'error': error};
 }
 
-class RequestUpdateMany<T> {
-  const RequestUpdateMany(this.entities);
-  final List<T> entities;
+class RequestUpdateManyWith<T, R> {
+  const RequestUpdateManyWith(this.entities);
+  final List<R> entities;
   Map<String, dynamic> toJson() => {
         'entities': entities,
       };
+}
+
+class RequestUpdateMany<T> extends RequestUpdateManyWith<T, T> {
+  const RequestUpdateMany(List<T> entities) : super(entities);
 }
 
 class SuccessUpdateMany<T> {
@@ -219,7 +238,7 @@ class SuccessDeleteOne<T> {
 class FailDeleteOne<T> {
   const FailDeleteOne({required this.id, this.error});
   final String id;
-  final dynamic? error;
+  final dynamic error;
   Map<String, dynamic> toJson() => {'id': id, 'error': error};
 }
 

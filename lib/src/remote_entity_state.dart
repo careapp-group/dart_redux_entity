@@ -19,11 +19,7 @@ class RemoteEntityState<T> extends EntityState<T> {
     Map<String, T> entities = const {},
     List<String> ids = const [],
     this.error,
-  })  : assert(loadingIds != null),
-        assert(updateTimes != null),
-        assert(entities != null),
-        assert(ids != null),
-        super(ids: ids, entities: entities);
+  }) : super(ids: ids, entities: entities);
 
   RemoteEntityState<T> copyWith({
     // EntityState properties

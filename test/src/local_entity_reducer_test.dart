@@ -1,6 +1,4 @@
 import 'package:redux_entity/redux_entity.dart';
-import 'package:redux_entity/src/local_entity_actions.dart';
-import 'package:redux_entity/src/local_entity_reducer.dart';
 import 'package:test/test.dart';
 import '../fixtures/book.dart';
 
