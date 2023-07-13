@@ -42,6 +42,28 @@ void main() {
         expect(result.error, false);
       });
     });
+
+    group(RequestCreateOneWith, () {
+      test('Should set creating true', () {
+        final RemoteEntityState<BookModel> result = reducer.call(
+            new RemoteEntityState<BookModel>(),
+            RequestCreateOneWith<BookModel, String>('Book Name'));
+        expect(result.creating, true);
+      });
+      test('Should ignore actions for other entity types', () {
+        final RemoteEntityState<BookModel> result = reducer.call(
+            new RemoteEntityState<BookModel>(),
+            RequestCreateOneWith<String, String>('Book Name'));
+        expect(result.creating, false);
+      });
+
+      test('Should clear error', () {
+        final RemoteEntityState<BookModel> result = reducer.call(
+            new RemoteEntityState<BookModel>(error: 'some error'),
+            RequestCreateOneWith<BookModel, String>('Book Name'));
+        expect(result.error, false);
+      });
+    });
     group(SuccessCreateOne, () {
       test('new item should be added to store', () {
         final result = reducer.call(new RemoteEntityState<BookModel>(),

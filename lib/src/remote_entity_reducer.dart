@@ -13,7 +13,10 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
   final UnsortedEntityStateAdapter<T> adapter;
 
   S call(S state, action) {
-    if (action is RequestCreateOne<T> || action is RequestCreateMany<T>) {
+    if (action is RequestCreateOne<T> ||
+        action is RequestCreateMany<T> ||
+        action is RequestCreateOneWith<T, dynamic> ||
+        action is RequestCreateManyWith<T, dynamic>) {
       return state.copyWith(creating: true, error: false) as S;
     }
     if (action is FailCreateOne<T> || action is FailCreateMany<T>) {
@@ -52,7 +55,8 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
       newIds[action.id] = true;
       return state.copyWith(loadingIds: newIds, error: false) as S;
     }
-    if (action is RequestUpdateOne<T>) {
+    if (action is RequestUpdateOne<T> ||
+        action is RequestUpdateOneWith<T, dynamic>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       newIds[adapter.getId(action.entity)] = true;
       return state.copyWith(loadingIds: newIds, error: false) as S;
@@ -123,7 +127,8 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
         loadingAll: false,
       ) as S;
     }
-    if (action is RequestUpdateMany<T>) {
+    if (action is RequestUpdateMany<T> ||
+        action is RequestUpdateManyWith<T, dynamic>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       for (T entity in action.entities) {
         newIds[adapter.getId(entity)] = true;

@@ -1,3 +1,7 @@
+## [1.1.2]
+
+- Fix loading properties not being set when using `RequestCreateWith` and `RequestUpdateWith` actions.
+
 ## [1.1.1]
 
 - Fix a regression where `RequestCreateOne.entity` was renamed to `request`. Oops.
