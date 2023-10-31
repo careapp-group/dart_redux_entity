@@ -4,20 +4,20 @@
  */
 typedef Deserializer<T> = T Function(dynamic);
 
-class EntityState<T> {
+class EntityState<K, T> {
   const EntityState({
     this.entities = const {},
     this.ids = const [],
   });
 
-  final Map<String, T> entities;
-  final List<String> ids;
+  final Map<K, T> entities;
+  final List<K> ids;
 
-  EntityState<T> copyWith({
-    Map<String, T>? entities,
-    List<String>? ids,
+  EntityState<K, T> copyWith({
+    Map<K, T>? entities,
+    List<K>? ids,
   }) {
-    return new EntityState<T>(
+    return new EntityState<K, T>(
       entities: entities ?? this.entities,
       ids: ids ?? this.ids,
     );
@@ -35,8 +35,8 @@ class EntityState<T> {
     Deserializer<T> deserializer,
   ) =>
       EntityState(
-          entities: (json['entities'] as Map<String, dynamic>).map(
-            (key, props) => MapEntry<String, T>(key, deserializer(props)),
+          entities: (json['entities'] as Map<K, dynamic>).map(
+            (key, props) => MapEntry<K, T>(key, deserializer(props)),
           ),
-          ids: List<String>.from(json['ids']));
+          ids: List<K>.from(json['ids']));
 }

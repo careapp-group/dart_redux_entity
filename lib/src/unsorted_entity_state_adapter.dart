@@ -1,71 +1,71 @@
 import './create_state_operator.dart';
-import './typedefs.dart';
+import './did_mutate.dart';
 import './entity_state.dart';
 import './entity_state_adapter.dart';
-import './did_mutate.dart';
+import './typedefs.dart';
 
 IdSelector defaultIdSelector = (item) {
   return item.id;
 };
 
-class UnsortedEntityStateAdapter<T> implements EntityStateAdapter<T> {
+class UnsortedEntityStateAdapter<K, T> implements EntityStateAdapter<K, T> {
   const UnsortedEntityStateAdapter({
     this.selectId,
   });
 
-  final IdSelector<T>? selectId;
+  final IdSelector<K, T>? selectId;
 
-  S addOne<S extends EntityState<T>>(T entity, S state) {
-    final op = createStateOperator<T, T>(_addOneMutably);
+  S addOne<S extends EntityState<K, T>>(T entity, S state) {
+    final op = createStateOperator<K, T, T>(_addOneMutably);
     return op(entity, state);
   }
 
-  S addMany<S extends EntityState<T>>(List<T> entity, S state) {
-    final op = createStateOperator<T, List<T>>(_addManyMutably);
+  S addMany<S extends EntityState<K, T>>(List<T> entity, S state) {
+    final op = createStateOperator<K, T, List<T>>(_addManyMutably);
     return op(entity, state);
   }
 
-  S addAll<S extends EntityState<T>>(List<T> entity, S state) {
-    final op = createStateOperator<T, List<T>>(_addAllMutably);
+  S addAll<S extends EntityState<K, T>>(List<T> entity, S state) {
+    final op = createStateOperator<K, T, List<T>>(_addAllMutably);
     return op(entity, state);
   }
 
   /// Removes an entity with the specified ID from the store
-  S removeOne<S extends EntityState<T>>(String id, S state) {
-    final op = createStateOperator<T, String>(_removeOneMutably);
+  S removeOne<S extends EntityState<K, T>>(K id, S state) {
+    final op = createStateOperator<K, T, K>(_removeOneMutably);
     return op(id, state);
   }
 
-  S removeMany<S extends EntityState<T>>(List<String> ids, S state) {
-    final op = createStateOperator<T, List<String>>(_removeManyMutably);
+  S removeMany<S extends EntityState<K, T>>(List<K> ids, S state) {
+    final op = createStateOperator<K, T, List<K>>(_removeManyMutably);
     return op(ids, state);
   }
 
-  S removeAll<S extends EntityState<T>>(S state) {
+  S removeAll<S extends EntityState<K, T>>(S state) {
     return state.copyWith(ids: [], entities: {}) as S;
   }
 
-  S updateOne<S extends EntityState<T>>(T item, S state) {
-    final op = createStateOperator<T, T>(_updateOneMutably);
+  S updateOne<S extends EntityState<K, T>>(T item, S state) {
+    final op = createStateOperator<K, T, T>(_updateOneMutably);
     return op(item, state);
   }
 
-  S updateMany<S extends EntityState<T>>(List<T> items, S state) {
-    final op = createStateOperator<T, List<T>>(_updateManyMutably);
+  S updateMany<S extends EntityState<K, T>>(List<T> items, S state) {
+    final op = createStateOperator<K, T, List<T>>(_updateManyMutably);
     return op(items, state);
   }
 
-  S upsertOne<S extends EntityState<T>>(T item, S state) {
-    final op = createStateOperator<T, T>(_upsertOneMutably);
+  S upsertOne<S extends EntityState<K, T>>(T item, S state) {
+    final op = createStateOperator<K, T, T>(_upsertOneMutably);
     return op(item, state);
   }
 
-  S upsertMany<S extends EntityState<T>>(List<T> items, S state) {
-    final op = createStateOperator<T, List<T>>(_upsertManyMutably);
+  S upsertMany<S extends EntityState<K, T>>(List<T> items, S state) {
+    final op = createStateOperator<K, T, List<T>>(_upsertManyMutably);
     return op(items, state);
   }
 
-  DidMutate _addOneMutably(T entity, EntityState<T> state) {
+  DidMutate _addOneMutably(T entity, EntityState<K, T> state) {
     final key = getId(entity);
     // nothing to be done
     if (state.entities.containsKey(key)) {
@@ -77,7 +77,7 @@ class UnsortedEntityStateAdapter<T> implements EntityStateAdapter<T> {
     return DidMutate.both;
   }
 
-  DidMutate _addManyMutably<S extends EntityState<T>>(
+  DidMutate _addManyMutably<S extends EntityState<K, T>>(
       List<T> entities, S state) {
     bool didMutate = false;
     for (T entity in entities) {
@@ -86,7 +86,7 @@ class UnsortedEntityStateAdapter<T> implements EntityStateAdapter<T> {
     return didMutate ? DidMutate.both : DidMutate.none;
   }
 
-  DidMutate _addAllMutably<S extends EntityState<T>>(
+  DidMutate _addAllMutably<S extends EntityState<K, T>>(
       List<T> entities, S state) {
     state.ids.clear();
     state.entities.clear();
@@ -94,15 +94,14 @@ class UnsortedEntityStateAdapter<T> implements EntityStateAdapter<T> {
     return DidMutate.both;
   }
 
-  DidMutate _removeOneMutably(String key, EntityState<T> state) {
+  DidMutate _removeOneMutably(K key, EntityState<K, T> state) {
     return _removeManyMutably([key], state);
   }
 
-  DidMutate _removeManyMutably(List<String> keys, EntityState<T> state) {
-    final toRemove =
-        keys.where((String key) => state.entities.containsKey(key));
+  DidMutate _removeManyMutably(List<K> keys, EntityState<K, T> state) {
+    final toRemove = keys.where((K key) => state.entities.containsKey(key));
     final bool didMutate = toRemove.length > 0;
-    for (String key in toRemove) {
+    for (K key in toRemove) {
       state.entities.remove(key);
     }
     if (didMutate) {
@@ -111,18 +110,18 @@ class UnsortedEntityStateAdapter<T> implements EntityStateAdapter<T> {
     return didMutate ? DidMutate.both : DidMutate.none;
   }
 
-  String getId(T item) {
+  K getId(T item) {
     if (selectId != null) {
       return selectId!(item);
     }
     return (item as dynamic).id;
   }
 
-  DidMutate _updateOneMutably(T changes, EntityState<T> state) {
+  DidMutate _updateOneMutably(T changes, EntityState<K, T> state) {
     return _updateManyMutably([changes], state);
   }
 
-  DidMutate _updateManyMutably(List<T> changes, EntityState<T> state) {
+  DidMutate _updateManyMutably(List<T> changes, EntityState<K, T> state) {
     changes = changes
         .where((item) => state.entities.containsKey(getId(item)))
         .toList();
@@ -136,11 +135,11 @@ class UnsortedEntityStateAdapter<T> implements EntityStateAdapter<T> {
     return DidMutate.entitiesOnly;
   }
 
-  DidMutate _upsertOneMutably(T entity, EntityState<T> state) {
+  DidMutate _upsertOneMutably(T entity, EntityState<K, T> state) {
     return _upsertManyMutably([entity], state);
   }
 
-  DidMutate _upsertManyMutably(List<T> entities, EntityState<T> state) {
+  DidMutate _upsertManyMutably(List<T> entities, EntityState<K, T> state) {
     final List<T> added = [];
     final List<T> updated = [];
 

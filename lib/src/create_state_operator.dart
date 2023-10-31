@@ -2,11 +2,11 @@ import './typedefs.dart';
 import './entity_state.dart';
 import './did_mutate.dart';
 
-Operation<V, R> createStateOperator<V, R>(Mutator<R, V> mutator) {
-  S operation<S extends EntityState<V>>(R arg, S state) {
+Operation<K, V, R> createStateOperator<K, V, R>(Mutator<R, K, V> mutator) {
+  S operation<S extends EntityState<K, V>>(R arg, S state) {
     final clone = state.copyWith(
-      ids: List<String>.from(state.ids),
-      entities: Map<String, V>.from(state.entities),
+      ids: List<K>.from(state.ids),
+      entities: Map<K, V>.from(state.entities),
     );
     final didMutate = mutator(arg, clone);
     if (didMutate == DidMutate.both) {

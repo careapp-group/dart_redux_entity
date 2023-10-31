@@ -1,14 +1,15 @@
+import 'package:redux/redux.dart';
 import 'package:redux_entity/redux_entity.dart';
 
 import './typedefs.dart';
-import 'package:redux/redux.dart';
 
-class LocalEntityReducer<S extends EntityState<T>, T> extends ReducerClass<S> {
+class LocalEntityReducer<S extends EntityState<K, T>, K, T>
+    extends ReducerClass<S> {
   LocalEntityReducer({
-    IdSelector<T>? selectId,
-  }) : adapter = UnsortedEntityStateAdapter<T>(selectId: selectId);
+    IdSelector<K, T>? selectId,
+  }) : adapter = UnsortedEntityStateAdapter<K, T>(selectId: selectId);
 
-  final UnsortedEntityStateAdapter<T> adapter;
+  final UnsortedEntityStateAdapter<K, T> adapter;
 
   S call(S state, action) {
     if (action is CreateOne<T>) {
@@ -17,7 +18,7 @@ class LocalEntityReducer<S extends EntityState<T>, T> extends ReducerClass<S> {
     if (action is UpdateOne<T>) {
       return this.adapter.upsertOne(action.entity, state);
     }
-    if (action is DeleteOne<T>) {
+    if (action is DeleteOne<K, T>) {
       return adapter.removeOne(action.id, state);
     }
 
