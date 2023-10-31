@@ -1,17 +1,18 @@
-import 'package:test/test.dart';
 import 'package:redux_entity/redux_entity.dart';
+import 'package:test/test.dart';
+
 import '../fixtures/book.dart';
 
 void main() {
   group(UnsortedEntityStateAdapter, () {
-    late EntityStateAdapter<BookModel> adapter;
-    late EntityState<BookModel> state;
+    late EntityStateAdapter<String, BookModel> adapter;
+    late EntityState<String, BookModel> state;
 
     setUp(() {
-      adapter = UnsortedEntityStateAdapter<BookModel>(
+      adapter = UnsortedEntityStateAdapter<String, BookModel>(
           selectId: (BookModel book) => book.id as String);
 
-      state = EntityState<BookModel>();
+      state = EntityState<String, BookModel>();
     });
 
     test('should let you add one entity to the state', () {

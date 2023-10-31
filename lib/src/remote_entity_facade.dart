@@ -1,7 +1,7 @@
 import 'package:redux/redux.dart';
 import './remote_entity_actions.dart';
 
-class RemoteEntityFacade<T> {
+class RemoteEntityFacade<K, T> {
   RemoteEntityFacade(this.store);
 
   // create
@@ -14,12 +14,12 @@ class RemoteEntityFacade<T> {
   }
 
   // retrieve
-  requestOne(String id) {
-    store.dispatch(RequestRetrieveOne<T>(id));
+  requestOne(K id) {
+    store.dispatch(RequestRetrieveOne<K, T>(id));
   }
 
-  requestMany(List<String> ids) {
-    store.dispatch(RequestRetrieveMany<T>(ids));
+  requestMany(List<K> ids) {
+    store.dispatch(RequestRetrieveMany<K, T>(ids));
   }
 
   requestAll() {
@@ -36,12 +36,12 @@ class RemoteEntityFacade<T> {
   }
 
   // delete
-  deleteOne(String id) {
-    store.dispatch(RequestDeleteOne<T>(id));
+  deleteOne(K id) {
+    store.dispatch(RequestDeleteOne<K, T>(id));
   }
 
-  deleteMany(List<String> ids) {
-    store.dispatch(RequestDeleteMany<T>(ids));
+  deleteMany(List<K> ids) {
+    store.dispatch(RequestDeleteMany<K, T>(ids));
   }
 
   final Store store;

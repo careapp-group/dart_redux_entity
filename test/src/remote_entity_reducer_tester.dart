@@ -12,8 +12,8 @@ typedef EntityFactory<T> = T Function();
 ///
 /// This class runs tests for RemoteEntityActions on your reducer
 /// to ensure it function as expected.
-class RemoteEntityReducerTester<R extends RemoteEntityReducer<S, T>,
-    S extends RemoteEntityState<T>, T> {
+class RemoteEntityReducerTester<R extends RemoteEntityReducer<S, String, T>,
+    S extends RemoteEntityState<String, T>, T> {
   testAll(
     R reducer,
     EntityFactory<T> generator,
@@ -147,13 +147,13 @@ class RemoteEntityReducerTester<R extends RemoteEntityReducer<S, T>,
 
     group(RequestRetrieveOne, () {
       test('Should set loading for element true', () {
-        final result = reducer.call(
-            initialState.copyWith() as S, new RequestRetrieveOne<T>('asdf'));
+        final result = reducer.call(initialState.copyWith() as S,
+            new RequestRetrieveOne<String, T>('asdf'));
         expect(result.loadingIds['asdf'], true);
       });
       test('Should clear error', () {
-        final result = reducer.call(
-            initialState.copyWith() as S, new RequestRetrieveOne<T>('asdf'));
+        final result = reducer.call(initialState.copyWith() as S,
+            new RequestRetrieveOne<String, T>('asdf'));
         expect(result.error, false);
       });
     });
@@ -183,7 +183,7 @@ class RemoteEntityReducerTester<R extends RemoteEntityReducer<S, T>,
         final result = reducer.call(
           initialState
               .copyWith(loadingIds: {reducer.adapter.getId(entity): true}) as S,
-          new FailRetrieveOne<T>(
+          new FailRetrieveOne<String, T>(
               id: reducer.adapter.getId(entity), error: 'error'),
         );
         expect(result.loadingIds[reducer.adapter.getId(entity)], false);
@@ -191,7 +191,7 @@ class RemoteEntityReducerTester<R extends RemoteEntityReducer<S, T>,
       test('Should set the error', () {
         final result = reducer.call(
           initialState.copyWith(loadingIds: {'a': true}) as S,
-          new FailRetrieveOne<T>(id: 'a', error: 'error'),
+          new FailRetrieveOne<String, T>(id: 'a', error: 'error'),
         );
         expect(result.error, 'error');
       });
@@ -463,13 +463,14 @@ class RemoteEntityReducerTester<R extends RemoteEntityReducer<S, T>,
 
     group(RequestDeleteOne, () {
       test('Should set loading for element true', () {
-        final result = reducer.call(initialState, RequestDeleteOne<T>('a'));
+        final result =
+            reducer.call(initialState, RequestDeleteOne<String, T>('a'));
         expect(result.loadingIds['a'], true);
       });
       test('Should clear error', () {
         final result = reducer.call(
             initialState.copyWith(error: 'testerror') as S,
-            RequestDeleteOne<T>('a'));
+            RequestDeleteOne<String, T>('a'));
         expect(result.error, false);
       });
     });
@@ -488,7 +489,7 @@ class RemoteEntityReducerTester<R extends RemoteEntityReducer<S, T>,
               'b',
               'c'
             ]) as S,
-            SuccessDeleteOne<T>('a'));
+            SuccessDeleteOne<String, T>('a'));
         expect(result.entities['a'], null);
       });
       test('Should set loading for element false', () {
@@ -505,7 +506,7 @@ class RemoteEntityReducerTester<R extends RemoteEntityReducer<S, T>,
             'b',
             'c'
           ]) as S,
-          SuccessDeleteOne<T>('a'),
+          SuccessDeleteOne<String, T>('a'),
         );
         expect(result.loadingIds['a'], false);
       });
@@ -525,7 +526,7 @@ class RemoteEntityReducerTester<R extends RemoteEntityReducer<S, T>,
             'b',
             'c'
           ]) as S,
-          FailDeleteOne<T>(id: 'a', error: 'error'),
+          FailDeleteOne<String, T>(id: 'a', error: 'error'),
         );
         expect(result.loadingIds['a'], false);
       });
@@ -543,7 +544,7 @@ class RemoteEntityReducerTester<R extends RemoteEntityReducer<S, T>,
             'b',
             'c'
           ]) as S,
-          FailDeleteOne<T>(id: 'a', error: 'error'),
+          FailDeleteOne<String, T>(id: 'a', error: 'error'),
         );
         expect(result.error, 'error');
       });
@@ -551,15 +552,15 @@ class RemoteEntityReducerTester<R extends RemoteEntityReducer<S, T>,
 
     group('REQUEST DELETE MANY', () {
       test('Should set loading for each element true', () {
-        final result =
-            reducer.call(initialState, RequestDeleteMany<T>(['a', 'b', 'c']));
+        final result = reducer.call(
+            initialState, RequestDeleteMany<String, T>(['a', 'b', 'c']));
         expect(result.loadingIds['a'], true);
         expect(result.loadingIds['b'], true);
         expect(result.loadingIds['c'], true);
       });
       test('Should clear error', () {
-        final result =
-            reducer.call(initialState, RequestDeleteMany<T>(['a', 'b', 'c']));
+        final result = reducer.call(
+            initialState, RequestDeleteMany<String, T>(['a', 'b', 'c']));
         expect(result.error, false);
       });
     });
@@ -578,7 +579,7 @@ class RemoteEntityReducerTester<R extends RemoteEntityReducer<S, T>,
             'b',
             'c'
           ]) as S,
-          SuccessDeleteMany<T>(['a', 'b', 'c']),
+          SuccessDeleteMany<String, T>(['a', 'b', 'c']),
         );
         expect(result.entities['a'], null);
         expect(result.entities['d'], null);
@@ -598,7 +599,7 @@ class RemoteEntityReducerTester<R extends RemoteEntityReducer<S, T>,
             'b',
             'c'
           ]) as S,
-          SuccessDeleteMany<T>(['a', 'b', 'c']),
+          SuccessDeleteMany<String, T>(['a', 'b', 'c']),
         );
         expect(result.loadingIds['a'], false);
         expect(result.loadingIds['b'], false);
@@ -622,7 +623,7 @@ class RemoteEntityReducerTester<R extends RemoteEntityReducer<S, T>,
               'b',
               'c'
             ]) as S,
-            FailDeleteMany<T>(ids: ['a', 'b', 'c'], error: 'error'));
+            FailDeleteMany<String, T>(ids: ['a', 'b', 'c'], error: 'error'));
         expect(result.loadingIds['a'], false);
         expect(result.loadingIds['b'], false);
         expect(result.loadingIds['c'], false);
@@ -643,7 +644,7 @@ class RemoteEntityReducerTester<R extends RemoteEntityReducer<S, T>,
               'b',
               'c'
             ]) as S,
-            FailDeleteMany<T>(ids: ['a', 'b', 'c'], error: 'error'));
+            FailDeleteMany<String, T>(ids: ['a', 'b', 'c'], error: 'error'));
         expect(result.error, 'error');
       });
     });

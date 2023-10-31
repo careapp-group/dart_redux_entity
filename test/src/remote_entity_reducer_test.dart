@@ -1,32 +1,39 @@
 import 'package:faker/faker.dart';
 import 'package:redux_entity/redux_entity.dart';
-import 'remote_entity_reducer_tester.dart';
 import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
+
 import '../fixtures/book.dart';
+import 'remote_entity_reducer_tester.dart';
 
 void main() {
   group(RemoteEntityReducerTester, () {
     final EntityFactory<BookModel> generator =
         () => BookModel(id: Uuid().v4(), title: faker.lorem.sentence());
-    final RemoteEntityReducer<RemoteEntityState<BookModel>, BookModel> reducer =
-        RemoteEntityReducer<RemoteEntityState<BookModel>, BookModel>();
+    final RemoteEntityReducer<RemoteEntityState<String, BookModel>, String,
+            BookModel> reducer =
+        RemoteEntityReducer<RemoteEntityState<String, BookModel>, String,
+            BookModel>();
     final tester = RemoteEntityReducerTester<
-        RemoteEntityReducer<RemoteEntityState<BookModel>, BookModel>,
-        RemoteEntityState<BookModel>,
+        RemoteEntityReducer<RemoteEntityState<String, BookModel>, String,
+            BookModel>,
+        RemoteEntityState<String, BookModel>,
         BookModel>();
 
-    return tester.testAll(reducer, generator, RemoteEntityState<BookModel>());
+    return tester.testAll(
+        reducer, generator, RemoteEntityState<String, BookModel>());
   });
 
   group(RemoteEntityReducer, () {
-    final RemoteEntityReducer<RemoteEntityState<BookModel>, BookModel> reducer =
-        RemoteEntityReducer<RemoteEntityState<BookModel>, BookModel>();
+    final RemoteEntityReducer<RemoteEntityState<String, BookModel>, String,
+            BookModel> reducer =
+        RemoteEntityReducer<RemoteEntityState<String, BookModel>, String,
+            BookModel>();
 
     group(RequestCreateOne, () {
       test('Should set creating true', () {
-        final RemoteEntityState<BookModel> result = reducer.call(
-            new RemoteEntityState<BookModel>(),
+        final RemoteEntityState<String, BookModel> result = reducer.call(
+            new RemoteEntityState<String, BookModel>(),
             RequestCreateOne<BookModel>(
               BookModel(title: 'asdf'),
             ));
@@ -34,8 +41,8 @@ void main() {
       });
 
       test('Should clear error', () {
-        final RemoteEntityState<BookModel> result = reducer.call(
-            new RemoteEntityState<BookModel>(error: 'some error'),
+        final RemoteEntityState<String, BookModel> result = reducer.call(
+            new RemoteEntityState<String, BookModel>(error: 'some error'),
             RequestCreateOne<BookModel>(
               BookModel(title: 'asdf'),
             ));
@@ -45,35 +52,35 @@ void main() {
 
     group(RequestCreateOneWith, () {
       test('Should set creating true', () {
-        final RemoteEntityState<BookModel> result = reducer.call(
-            new RemoteEntityState<BookModel>(),
+        final RemoteEntityState<String, BookModel> result = reducer.call(
+            new RemoteEntityState<String, BookModel>(),
             RequestCreateOneWith<BookModel, String>('Book Name'));
         expect(result.creating, true);
       });
       test('Should ignore actions for other entity types', () {
-        final RemoteEntityState<BookModel> result = reducer.call(
-            new RemoteEntityState<BookModel>(),
+        final RemoteEntityState<String, BookModel> result = reducer.call(
+            new RemoteEntityState<String, BookModel>(),
             RequestCreateOneWith<String, String>('Book Name'));
         expect(result.creating, false);
       });
 
       test('Should clear error', () {
-        final RemoteEntityState<BookModel> result = reducer.call(
-            new RemoteEntityState<BookModel>(error: 'some error'),
+        final RemoteEntityState<String, BookModel> result = reducer.call(
+            new RemoteEntityState<String, BookModel>(error: 'some error'),
             RequestCreateOneWith<BookModel, String>('Book Name'));
         expect(result.error, false);
       });
     });
     group(SuccessCreateOne, () {
       test('new item should be added to store', () {
-        final result = reducer.call(new RemoteEntityState<BookModel>(),
+        final result = reducer.call(new RemoteEntityState<String, BookModel>(),
             SuccessCreateOne<BookModel>(BookModel(id: '2345', title: 'test')));
         expect(result.entities['2345']!.title, 'test');
       });
 
       test('creating should be false', () {
         final result = reducer.call(
-            new RemoteEntityState<BookModel>(creating: true),
+            new RemoteEntityState<String, BookModel>(creating: true),
             new SuccessCreateOne<BookModel>(
                 BookModel(id: '2345', title: 'test')));
         expect(result.creating, false);
@@ -82,14 +89,14 @@ void main() {
     group(FailCreateOne, () {
       test('creating should be false', () {
         final result = reducer.call(
-            new RemoteEntityState<BookModel>(creating: true),
+            new RemoteEntityState<String, BookModel>(creating: true),
             new FailCreateOne<BookModel>(
                 entity: new BookModel(title: 'test'), error: 'Some error'));
         expect(result.creating, false);
       });
       test('sets an error', () {
         final result = reducer.call(
-            new RemoteEntityState<BookModel>(creating: true),
+            new RemoteEntityState<String, BookModel>(creating: true),
             new FailCreateOne<BookModel>(
                 entity: new BookModel(title: 'test'), error: 'Some error'));
         expect(result.error, 'Some error');
@@ -99,14 +106,14 @@ void main() {
     group(RequestCreateMany, () {
       test('Should set creating true', () {
         final result = reducer.call(
-            new RemoteEntityState<BookModel>(creating: false),
+            new RemoteEntityState<String, BookModel>(creating: false),
             new RequestCreateMany<BookModel>(
                 [BookModel(title: 'test'), BookModel(title: 'asdf')]));
         expect(result.creating, true);
       });
       test('Should clear error', () {
         final result = reducer.call(
-            new RemoteEntityState<BookModel>(creating: false),
+            new RemoteEntityState<String, BookModel>(creating: false),
             new RequestCreateMany<BookModel>(
                 [BookModel(title: 'test'), BookModel(title: 'asdf')]));
         expect(result.error, false);
@@ -115,7 +122,7 @@ void main() {
     group(SuccessCreateMany, () {
       test('new items should be added to store', () {
         final result = reducer.call(
-            new RemoteEntityState<BookModel>(creating: true),
+            new RemoteEntityState<String, BookModel>(creating: true),
             new SuccessCreateMany<BookModel>([
               BookModel(id: 'a', title: 'test'),
               BookModel(id: 'b', title: 'asdf')
@@ -125,7 +132,7 @@ void main() {
       });
       test('creating should be false', () {
         final result = reducer.call(
-          new RemoteEntityState<BookModel>(creating: true),
+          new RemoteEntityState<String, BookModel>(creating: true),
           new SuccessCreateMany<BookModel>(
             [
               BookModel(id: 'a', title: 'test'),
@@ -139,7 +146,7 @@ void main() {
     group(FailCreateMany, () {
       test('creating should be false', () {
         final result = reducer.call(
-          new RemoteEntityState<BookModel>(creating: true),
+          new RemoteEntityState<String, BookModel>(creating: true),
           new FailCreateMany<BookModel>(entities: [
             BookModel(id: 'a', title: 'test'),
             BookModel(id: 'b', title: 'asdf')
@@ -149,7 +156,7 @@ void main() {
       });
       test('Should set the error', () {
         final result = reducer.call(
-          new RemoteEntityState<BookModel>(creating: true),
+          new RemoteEntityState<String, BookModel>(creating: true),
           new FailCreateMany<BookModel>(entities: [
             BookModel(id: 'a', title: 'test'),
             BookModel(id: 'b', title: 'asdf')
@@ -161,13 +168,13 @@ void main() {
 
     group(RequestRetrieveOne, () {
       test('Should set loading for element true', () {
-        final result = reducer.call(new RemoteEntityState<BookModel>(),
-            new RequestRetrieveOne<BookModel>('asdf'));
+        final result = reducer.call(new RemoteEntityState<String, BookModel>(),
+            new RequestRetrieveOne<String, BookModel>('asdf'));
         expect(result.loadingIds['asdf'], true);
       });
       test('Should clear error', () {
-        final result = reducer.call(new RemoteEntityState<BookModel>(),
-            new RequestRetrieveOne<BookModel>('asdf'));
+        final result = reducer.call(new RemoteEntityState<String, BookModel>(),
+            new RequestRetrieveOne<String, BookModel>('asdf'));
         expect(result.error, false);
       });
     });
@@ -190,15 +197,15 @@ void main() {
     group(FailRetrieveOne, () {
       test('Should set loading for element false', () {
         final result = reducer.call(
-          new RemoteEntityState<BookModel>(loadingIds: {'a': true}),
-          new FailRetrieveOne<BookModel>(id: 'a', error: 'error'),
+          new RemoteEntityState<String, BookModel>(loadingIds: {'a': true}),
+          new FailRetrieveOne<String, BookModel>(id: 'a', error: 'error'),
         );
         expect(result.loadingIds['a'], false);
       });
       test('Should set the error', () {
         final result = reducer.call(
           new RemoteEntityState(loadingIds: {'a': true}),
-          new FailRetrieveOne<BookModel>(id: 'a', error: 'error'),
+          new FailRetrieveOne<String, BookModel>(id: 'a', error: 'error'),
         );
         expect(result.error, 'error');
       });
@@ -206,13 +213,13 @@ void main() {
 
     group(RequestRetrieveAll, () {
       test('Should set loadingAll true', () {
-        final result = reducer.call(
-            RemoteEntityState<BookModel>(), RequestRetrieveAll<BookModel>());
+        final result = reducer.call(RemoteEntityState<String, BookModel>(),
+            RequestRetrieveAll<BookModel>());
         expect(result.loadingAll, true);
       });
       test('Should clear error', () {
-        final result = reducer.call(
-            RemoteEntityState<BookModel>(), RequestRetrieveAll<BookModel>());
+        final result = reducer.call(RemoteEntityState<String, BookModel>(),
+            RequestRetrieveAll<BookModel>());
         expect(result.error, false);
       });
     });
@@ -220,7 +227,7 @@ void main() {
     group(SuccessRetrieveAll, () {
       test('items should be added to store', () {
         final result = reducer.call(
-            RemoteEntityState<BookModel>(
+            RemoteEntityState<String, BookModel>(
                 loadingIds: {'a': true, 'b': true, 'c': true}),
             SuccessRetrieveAll([
               BookModel(id: 'a', title: 'test'),
@@ -233,7 +240,7 @@ void main() {
       });
       test('Should set loadingAll false', () {
         final result = reducer.call(
-            RemoteEntityState<BookModel>(
+            RemoteEntityState<String, BookModel>(
                 loadingIds: {'a': true, 'b': true, 'c': true}),
             SuccessRetrieveAll([
               BookModel(id: 'a', title: 'test'),
@@ -246,14 +253,14 @@ void main() {
     group(FailRetrieveAll, () {
       test('Should set loadingAll false', () {
         final result = reducer.call(
-            RemoteEntityState<BookModel>(
+            RemoteEntityState<String, BookModel>(
                 loadingIds: {'a': true, 'b': true, 'c': true}),
             FailRetrieveAll('error'));
         expect(result.loadingAll, false);
       });
       test('Should set the error', () {
         final result = reducer.call(
-            RemoteEntityState<BookModel>(
+            RemoteEntityState<String, BookModel>(
                 loadingIds: {'a': true, 'b': true, 'c': true}),
             FailRetrieveAll<BookModel>('error'));
         expect(result.error, 'error');
@@ -262,13 +269,13 @@ void main() {
 
     group('REQUEST UPDATE ONE', () {
       test('Should set loading for element true', () {
-        final result = reducer.call(RemoteEntityState<BookModel>(),
+        final result = reducer.call(RemoteEntityState<String, BookModel>(),
             RequestUpdateOne<BookModel>(BookModel(id: 'a', title: 'test')));
         expect(result.loadingIds['a'], true);
       });
       test('Should clear error', () {
         final result = reducer.call(
-            RemoteEntityState<BookModel>(error: 'testerror'),
+            RemoteEntityState<String, BookModel>(error: 'testerror'),
             RequestUpdateOne<BookModel>(BookModel(id: 'a', title: 'test')));
         expect(result.error, false);
       });
@@ -276,7 +283,7 @@ void main() {
     group(SuccessUpdateOne, () {
       test('item should be added to store', () {
         final result = reducer.call(
-            RemoteEntityState<BookModel>(
+            RemoteEntityState<String, BookModel>(
                 creating: false,
                 loadingAll: false,
                 loadingIds: {'a': true},
@@ -287,7 +294,7 @@ void main() {
       });
       test('Should set loading for element false', () {
         final result = reducer.call(
-            RemoteEntityState<BookModel>(
+            RemoteEntityState<String, BookModel>(
                 creating: false,
                 loadingAll: false,
                 loadingIds: {'a': true},
@@ -300,7 +307,7 @@ void main() {
     group(FailUpdateOne, () {
       test('Should set loading for element false', () {
         final result = reducer.call(
-            RemoteEntityState<BookModel>(
+            RemoteEntityState<String, BookModel>(
                 creating: false,
                 loadingAll: false,
                 loadingIds: {'a': true},
@@ -312,7 +319,7 @@ void main() {
       });
       test('Should set the error', () {
         final result = reducer.call(
-            RemoteEntityState<BookModel>(
+            RemoteEntityState<String, BookModel>(
                 creating: false,
                 loadingAll: false,
                 loadingIds: {'a': true},
@@ -327,7 +334,7 @@ void main() {
     group(RequestUpdateMany, () {
       test('Should set loading for each element true', () {
         final result = reducer.call(
-            RemoteEntityState<BookModel>(),
+            RemoteEntityState<String, BookModel>(),
             RequestUpdateMany<BookModel>([
               BookModel(id: 'a', title: 'testa'),
               BookModel(id: 'b', title: 'testb'),
@@ -339,7 +346,7 @@ void main() {
       });
       test('Should clear error', () {
         final result = reducer.call(
-            RemoteEntityState<BookModel>(),
+            RemoteEntityState<String, BookModel>(),
             RequestUpdateMany<BookModel>([
               BookModel(id: 'a', title: 'testa'),
               BookModel(id: 'b', title: 'testb'),
@@ -351,7 +358,7 @@ void main() {
     group(SuccessUpdateMany, () {
       test('items should be added to store', () {
         final result = reducer.call(
-          RemoteEntityState<BookModel>(
+          RemoteEntityState<String, BookModel>(
               creating: false,
               loadingAll: false,
               loadingIds: {
@@ -383,7 +390,7 @@ void main() {
       });
       test('Should set loading for each element false', () {
         final result = reducer.call(
-          RemoteEntityState<BookModel>(
+          RemoteEntityState<String, BookModel>(
               creating: false,
               loadingAll: false,
               loadingIds: {
@@ -417,7 +424,7 @@ void main() {
     group(FailUpdateMany, () {
       test('Should set loading for each element false', () {
         final result = reducer.call(
-          RemoteEntityState<BookModel>(
+          RemoteEntityState<String, BookModel>(
               creating: false,
               loadingAll: false,
               loadingIds: {
@@ -447,7 +454,7 @@ void main() {
       });
       test('Should set the error', () {
         final result = reducer.call(
-          RemoteEntityState<BookModel>(
+          RemoteEntityState<String, BookModel>(
               creating: false,
               loadingAll: false,
               loadingIds: {
@@ -477,20 +484,20 @@ void main() {
 
     group(RequestDeleteOne, () {
       test('Should set loading for element true', () {
-        final result =
-            reducer.call(RemoteEntityState(), RequestDeleteOne<BookModel>('a'));
+        final result = reducer.call(
+            RemoteEntityState(), RequestDeleteOne<String, BookModel>('a'));
         expect(result.loadingIds['a'], true);
       });
       test('Should clear error', () {
         final result = reducer.call(RemoteEntityState(error: 'testerror'),
-            RequestDeleteOne<BookModel>('a'));
+            RequestDeleteOne<String, BookModel>('a'));
         expect(result.error, false);
       });
     });
     group('SUCCESS DELETE ONE', () {
       test('item should be removed from store', () {
         final result = reducer.call(
-            RemoteEntityState<BookModel>(
+            RemoteEntityState<String, BookModel>(
                 creating: false,
                 loadingAll: false,
                 loadingIds: {
@@ -506,12 +513,12 @@ void main() {
                   'b',
                   'c'
                 ]),
-            SuccessDeleteOne<BookModel>('a'));
+            SuccessDeleteOne<String, BookModel>('a'));
         expect(result.entities['a'], null);
       });
       test('Should set loading for element false', () {
         final result = reducer.call(
-          RemoteEntityState<BookModel>(
+          RemoteEntityState<String, BookModel>(
               creating: false,
               loadingAll: false,
               loadingIds: {
@@ -527,7 +534,7 @@ void main() {
                 'b',
                 'c'
               ]),
-          SuccessDeleteOne<BookModel>('a'),
+          SuccessDeleteOne<String, BookModel>('a'),
         );
         expect(result.loadingIds['a'], false);
       });
@@ -535,7 +542,7 @@ void main() {
     group(FailDeleteOne, () {
       test('Should set loading for element false', () {
         final result = reducer.call(
-          RemoteEntityState<BookModel>(
+          RemoteEntityState<String, BookModel>(
               creating: false,
               loadingAll: false,
               loadingIds: {
@@ -551,13 +558,13 @@ void main() {
                 'b',
                 'c'
               ]),
-          FailDeleteOne<BookModel>(id: 'a', error: 'error'),
+          FailDeleteOne<String, BookModel>(id: 'a', error: 'error'),
         );
         expect(result.loadingIds['a'], false);
       });
       test('Should set error', () {
         final result = reducer.call(
-          RemoteEntityState<BookModel>(
+          RemoteEntityState<String, BookModel>(
               creating: false,
               loadingAll: false,
               loadingIds: {
@@ -573,7 +580,7 @@ void main() {
                 'b',
                 'c'
               ]),
-          FailDeleteOne<BookModel>(id: 'a', error: 'error'),
+          FailDeleteOne<String, BookModel>(id: 'a', error: 'error'),
         );
         expect(result.error, 'error');
       });
@@ -581,22 +588,22 @@ void main() {
 
     group('REQUEST DELETE MANY', () {
       test('Should set loading for each element true', () {
-        final result = reducer.call(RemoteEntityState<BookModel>(),
-            RequestDeleteMany<BookModel>(['a', 'b', 'c']));
+        final result = reducer.call(RemoteEntityState<String, BookModel>(),
+            RequestDeleteMany<String, BookModel>(['a', 'b', 'c']));
         expect(result.loadingIds['a'], true);
         expect(result.loadingIds['b'], true);
         expect(result.loadingIds['c'], true);
       });
       test('Should clear error', () {
-        final result = reducer.call(RemoteEntityState<BookModel>(),
-            RequestDeleteMany<BookModel>(['a', 'b', 'c']));
+        final result = reducer.call(RemoteEntityState<String, BookModel>(),
+            RequestDeleteMany<String, BookModel>(['a', 'b', 'c']));
         expect(result.error, false);
       });
     });
     group('SUCCESS DELETE MANY', () {
       test('items should be removed fromstore', () {
         final result = reducer.call(
-          RemoteEntityState<BookModel>(
+          RemoteEntityState<String, BookModel>(
               creating: false,
               loadingAll: false,
               loadingIds: {
@@ -612,7 +619,7 @@ void main() {
                 'b',
                 'c'
               ]),
-          SuccessDeleteMany<BookModel>(['a', 'b', 'c']),
+          SuccessDeleteMany<String, BookModel>(['a', 'b', 'c']),
         );
         expect(result.entities['a'], null);
         expect(result.entities['d'], null);
@@ -620,7 +627,7 @@ void main() {
       });
       test('Should set loading for each element false', () {
         final result = reducer.call(
-          RemoteEntityState<BookModel>(
+          RemoteEntityState<String, BookModel>(
               creating: false,
               loadingAll: false,
               loadingIds: {
@@ -636,7 +643,7 @@ void main() {
                 'b',
                 'c'
               ]),
-          SuccessDeleteMany<BookModel>(['a', 'b', 'c']),
+          SuccessDeleteMany<String, BookModel>(['a', 'b', 'c']),
         );
         expect(result.loadingIds['a'], false);
         expect(result.loadingIds['b'], false);
@@ -646,7 +653,7 @@ void main() {
     group('FAIL DELETE MANY', () {
       test('Should set loading for each element false', () {
         final result = reducer.call(
-            RemoteEntityState<BookModel>(
+            RemoteEntityState<String, BookModel>(
                 creating: false,
                 loadingAll: false,
                 loadingIds: {
@@ -664,14 +671,15 @@ void main() {
                   'b',
                   'c'
                 ]),
-            FailDeleteMany<BookModel>(ids: ['a', 'b', 'c'], error: 'error'));
+            FailDeleteMany<String, BookModel>(
+                ids: ['a', 'b', 'c'], error: 'error'));
         expect(result.loadingIds['a'], false);
         expect(result.loadingIds['b'], false);
         expect(result.loadingIds['c'], false);
       });
       test('Should set error', () {
         final result = reducer.call(
-            RemoteEntityState<BookModel>(
+            RemoteEntityState<String, BookModel>(
                 creating: false,
                 loadingAll: false,
                 loadingIds: {
@@ -689,7 +697,8 @@ void main() {
                   'b',
                   'c'
                 ]),
-            FailDeleteMany<BookModel>(ids: ['a', 'b', 'c'], error: 'error'));
+            FailDeleteMany<String, BookModel>(
+                ids: ['a', 'b', 'c'], error: 'error'));
         expect(result.error, 'error');
       });
     });

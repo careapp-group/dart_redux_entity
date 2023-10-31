@@ -1,7 +1,8 @@
-import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_entity/redux_entity.dart';
+import 'package:test/test.dart';
+
 import '../fixtures/book.dart';
 
 class MockStore extends Mock implements Store {}
@@ -9,11 +10,11 @@ class MockStore extends Mock implements Store {}
 void main() {
   group(RemoteEntityFacade, () {
     late MockStore store;
-    late RemoteEntityFacade facade;
+    late RemoteEntityFacade<String, BookModel> facade;
 
     setUp(() {
       store = MockStore();
-      facade = RemoteEntityFacade<BookModel>(store);
+      facade = RemoteEntityFacade<String, BookModel>(store);
     });
 
     test('createOne', () {
@@ -26,11 +27,13 @@ void main() {
     });
     test('requestOne', () {
       facade.requestOne('id');
-      verify(store.dispatch(argThat(isA<RequestRetrieveOne<BookModel>>())));
+      verify(store
+          .dispatch(argThat(isA<RequestRetrieveOne<String, BookModel>>())));
     });
     test('requestMany', () {
       facade.requestMany(['id1', 'id2']);
-      verify(store.dispatch(argThat(isA<RequestRetrieveMany<BookModel>>())));
+      verify(store
+          .dispatch(argThat(isA<RequestRetrieveMany<String, BookModel>>())));
     });
     test('requestAll', () {
       facade.requestAll();
@@ -46,11 +49,13 @@ void main() {
     });
     test('deleteOne', () {
       facade.deleteOne('id');
-      verify(store.dispatch(argThat(isA<RequestDeleteOne<BookModel>>())));
+      verify(
+          store.dispatch(argThat(isA<RequestDeleteOne<String, BookModel>>())));
     });
     test('deleteMany', () {
       facade.deleteMany(['id1', 'id2']);
-      verify(store.dispatch(argThat(isA<RequestDeleteMany<BookModel>>())));
+      verify(
+          store.dispatch(argThat(isA<RequestDeleteMany<String, BookModel>>())));
     });
   });
 }

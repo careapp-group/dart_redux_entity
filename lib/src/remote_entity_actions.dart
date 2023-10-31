@@ -3,7 +3,9 @@
 /// Request creating an entity of type T with a request object of type R
 class RequestCreateOneWith<T, R> {
   const RequestCreateOneWith(this.entity);
+
   final R entity;
+
   Map<String, dynamic> toJson() => {
         'entity': entity,
       };
@@ -16,7 +18,9 @@ class RequestCreateOne<T> extends RequestCreateOneWith<T, T> {
 
 class SuccessCreateOne<T> {
   const SuccessCreateOne(this.entity);
+
   final T entity;
+
   Map<String, dynamic> toJson() => {
         'entity': entity,
       };
@@ -24,14 +28,18 @@ class SuccessCreateOne<T> {
 
 class FailCreateOne<T> {
   const FailCreateOne({this.entity, this.error});
+
   final T? entity;
   final dynamic error;
+
   Map<String, dynamic> toJson() => {'entity': entity, 'error': error};
 }
 
 class RequestCreateManyWith<T, R> {
   const RequestCreateManyWith(this.entities);
+
   final List<R> entities;
+
   Map<String, dynamic> toJson() => {
         'entities': entities,
       };
@@ -43,7 +51,9 @@ class RequestCreateMany<T> extends RequestCreateManyWith<T, T> {
 
 class SuccessCreateMany<T> {
   const SuccessCreateMany(this.entities);
+
   final List<T> entities;
+
   Map<String, dynamic> toJson() => {
         'entites': entities,
       };
@@ -51,17 +61,19 @@ class SuccessCreateMany<T> {
 
 class FailCreateMany<T> {
   const FailCreateMany({required this.entities, this.error});
+
   final List<T> entities;
   final dynamic error;
+
   Map<String, dynamic> toJson() => {'entites': entities, 'error': error};
 }
 
 // cRud
-class RequestRetrieveOne<T> {
+class RequestRetrieveOne<K, T> {
   const RequestRetrieveOne(this.id, {this.forceRefresh = false});
 
   /// The ID of the entity to fetch
-  final String id;
+  final K id;
 
   /// Whether to force a refresh (if you are using a caching mechanism)
   final bool forceRefresh;
@@ -74,7 +86,9 @@ class RequestRetrieveOne<T> {
 
 class SuccessRetrieveOne<T> {
   const SuccessRetrieveOne(this.entity);
+
   final T entity;
+
   Map<String, dynamic> toJson() => {
         'entity': entity,
       };
@@ -84,25 +98,31 @@ class SuccessRetrieveOne<T> {
 /// so returning with the cached copy
 class SuccessRetrieveOneFromCache<T> {
   const SuccessRetrieveOneFromCache(this.entity);
+
   final T entity;
+
   Map<String, dynamic> toJson() => {
         'entity': entity,
       };
 }
 
-class FailRetrieveOne<T> {
+class FailRetrieveOne<K, T> {
   const FailRetrieveOne({
     required this.id,
     this.error,
   });
-  final String id;
+
+  final K id;
   final dynamic error;
+
   Map<String, dynamic> toJson() => {'id': id, 'error': error};
 }
 
-class RequestRetrieveMany<T> {
+class RequestRetrieveMany<K, T> {
   const RequestRetrieveMany(this.ids);
-  final List<String> ids;
+
+  final List<K> ids;
+
   Map<String, dynamic> toJson() => {
         'ids': ids,
       };
@@ -110,16 +130,20 @@ class RequestRetrieveMany<T> {
 
 class SuccessRetrieveMany<T> {
   const SuccessRetrieveMany(this.entities);
+
   final List<T> entities;
+
   Map<String, dynamic> toJson() => {
         'entities': entities,
       };
 }
 
-class FailRetrieveMany<T> {
+class FailRetrieveMany<K, T> {
   const FailRetrieveMany(this.ids, this.error);
-  final List<String> ids;
+
+  final List<K> ids;
   final dynamic error;
+
   Map<String, dynamic> toJson() => {'ids': ids, 'error': error};
 }
 
@@ -138,7 +162,9 @@ class RequestRetrieveAll<T> {
 
 class SuccessRetrieveAll<T> {
   const SuccessRetrieveAll(this.entities);
+
   final List<T> entities;
+
   Map<String, dynamic> toJson() => {
         'entities': entities,
       };
@@ -148,7 +174,9 @@ class SuccessRetrieveAll<T> {
 /// so returning with the cached copy
 class SuccessRetrieveAllFromCache<T> {
   const SuccessRetrieveAllFromCache(this.entities);
+
   final List<T> entities;
+
   Map<String, dynamic> toJson() => {
         'entities': entities,
       };
@@ -156,7 +184,9 @@ class SuccessRetrieveAllFromCache<T> {
 
 class FailRetrieveAll<T> {
   const FailRetrieveAll(this.error);
+
   final dynamic error;
+
   Map<String, dynamic> toJson() => {
         'error': error,
       };
@@ -165,7 +195,9 @@ class FailRetrieveAll<T> {
 // crUdclass RequestCreateOne<T> {
 class RequestUpdateOneWith<T, R> {
   const RequestUpdateOneWith(this.entity);
+
   final R entity;
+
   Map<String, dynamic> toJson() => {
         'entity': entity,
       };
@@ -177,7 +209,9 @@ class RequestUpdateOne<T> extends RequestUpdateOneWith<T, T> {
 
 class SuccessUpdateOne<T> {
   const SuccessUpdateOne(this.entity);
+
   final T entity;
+
   Map<String, dynamic> toJson() => {
         'entity': entity,
       };
@@ -185,14 +219,18 @@ class SuccessUpdateOne<T> {
 
 class FailUpdateOne<T> {
   const FailUpdateOne({required this.entity, this.error});
+
   final T entity;
   final dynamic error;
+
   Map<String, dynamic> toJson() => {'entity': entity, 'error': error};
 }
 
 class RequestUpdateManyWith<T, R> {
   const RequestUpdateManyWith(this.entities);
+
   final List<R> entities;
+
   Map<String, dynamic> toJson() => {
         'entities': entities,
       };
@@ -204,7 +242,9 @@ class RequestUpdateMany<T> extends RequestUpdateManyWith<T, T> {
 
 class SuccessUpdateMany<T> {
   const SuccessUpdateMany(this.entities);
+
   final List<T> entities;
+
   Map<String, dynamic> toJson() => {
         'entities': entities,
       };
@@ -212,56 +252,70 @@ class SuccessUpdateMany<T> {
 
 class FailUpdateMany<T> {
   const FailUpdateMany({required this.entities, this.error});
+
   final List<T> entities;
   final dynamic error;
+
   Map<String, dynamic> toJson() => {'entities': entities, 'error': error};
 }
 
 // cruD
 
-class RequestDeleteOne<T> {
+class RequestDeleteOne<K, T> {
   const RequestDeleteOne(this.id);
-  final String id;
+
+  final K id;
+
   Map<String, dynamic> toJson() => {
         'id': id,
       };
 }
 
-class SuccessDeleteOne<T> {
+class SuccessDeleteOne<K, T> {
   const SuccessDeleteOne(this.id);
-  final String id;
+
+  final K id;
+
   Map<String, dynamic> toJson() => {
         'id': id,
       };
 }
 
-class FailDeleteOne<T> {
+class FailDeleteOne<K, T> {
   const FailDeleteOne({required this.id, this.error});
-  final String id;
+
+  final K id;
   final dynamic error;
+
   Map<String, dynamic> toJson() => {'id': id, 'error': error};
 }
 
-class RequestDeleteMany<T> {
+class RequestDeleteMany<K, T> {
   const RequestDeleteMany(this.ids);
-  final List<String> ids;
+
+  final List<K> ids;
+
   Map<String, dynamic> toJson() => {
         'ids': ids,
       };
 }
 
-class SuccessDeleteMany<T> {
+class SuccessDeleteMany<K, T> {
   const SuccessDeleteMany(this.ids);
-  final List<String> ids;
+
+  final List<K> ids;
+
   Map<String, dynamic> toJson() => {
         'ids': ids,
       };
 }
 
-class FailDeleteMany<T> {
+class FailDeleteMany<K, T> {
   const FailDeleteMany({required this.ids, this.error});
-  final List<String> ids;
+
+  final List<K> ids;
   final dynamic error;
+
   Map<String, dynamic> toJson() => {
         'ids': ids,
         'error': error,
