@@ -32,11 +32,11 @@ class EntityState<T> {
 
   factory EntityState.fromJson(
     Map<String, dynamic> json,
-    Deserializer<T> deserializer,
+    Deserializer<T> fromJsonT,
   ) =>
       EntityState(
           entities: (json['entities'] as Map<String, dynamic>).map(
-            (key, props) => MapEntry<String, T>(key, deserializer(props)),
+            (key, props) => MapEntry<String, T>(key, fromJsonT(props)),
           ),
           ids: List<String>.from(json['ids']));
 }
