@@ -62,11 +62,11 @@ class RemoteEntityState<T> extends EntityState<T> {
 
   factory RemoteEntityState.fromJson(
     Map<String, dynamic> json,
-    Deserializer<T> deserializer,
+    Deserializer<T> fromJsonT,
   ) =>
       RemoteEntityState(
         entities: (json['entities']).map<String, T>(
-              (key, props) => MapEntry<String, T>(key, deserializer(props)),
+              (key, props) => MapEntry<String, T>(key, fromJsonT(props)),
             ) ??
             {},
         ids: json['ids'] != null ? List<String>.from(json['ids']) : [],
