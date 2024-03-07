@@ -1,8 +1,9 @@
+import 'package:redux/redux.dart';
+
+import './remote_entity_actions.dart';
+import './remote_entity_state.dart';
 import './typedefs.dart';
 import './unsorted_entity_state_adapter.dart';
-import './remote_entity_actions.dart';
-import 'package:redux/redux.dart';
-import './remote_entity_state.dart';
 
 class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
     extends ReducerClass<S> {
@@ -66,9 +67,16 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
       newIds[action.id] = true;
       return state.copyWith(loadingIds: newIds, error: false) as S;
     }
+    if (action is RequestRetrieveMany<T>) {
+      Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
+      newIds
+          .addEntries(action.ids.map((id) => MapEntry<String, bool>(id, true)));
+      return state.copyWith(loadingIds: newIds, error: false) as S;
+    }
     if (action is RequestRetrieveAll<T>) {
       return state.copyWith(loadingAll: true, error: false) as S;
     }
+
     if (action is FailUpdateOne<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       newIds[adapter.getId(action.entity)] = false;
@@ -79,7 +87,12 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
       newIds[action.id] = false;
       return state.copyWith(loadingIds: newIds, error: action.error) as S;
     }
-
+    if (action is FailRetrieveMany<T>) {
+      Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
+      newIds.addEntries(
+          action.ids.map((id) => MapEntry<String, bool>(id, false)));
+      return state.copyWith(loadingIds: newIds, error: action.error) as S;
+    }
     if (action is FailRetrieveAll<T>) {
       return state.copyWith(loadingAll: false, error: action.error) as S;
     }
@@ -104,7 +117,19 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
         loadingIds: newIds,
       ) as S;
     }
-
+    if (action is SuccessRetrieveMany<T>) {
+      Map<String, bool> newIds = Map.from(state.loadingIds);
+      newIds.addEntries(action.entities
+          .map((entity) => MapEntry(adapter.getId(entity), false)));
+      Map<String, DateTime> updateTimes = Map.from(state.updateTimes);
+      updateTimes.addEntries(
+          action.entities.map((entity) => MapEntry<String, DateTime>(
+                adapter.getId(entity),
+                DateTime.now(),
+              )));
+      return this.adapter.upsertMany(action.entities,
+          state.copyWith(loadingIds: newIds, updateTimes: updateTimes) as S);
+    }
     if (action is SuccessRetrieveAll<T>) {
       return this.adapter.upsertMany(
             action.entities,
