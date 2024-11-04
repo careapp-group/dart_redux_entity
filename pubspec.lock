@@ -85,10 +85,10 @@ packages:
     dependency: transitive
     description:
       name: code_builder
-      sha256: "48ae73ba8dbf1923de91e0fd65736148f63f6c6fb0925bdda05c1df0298c55e1"
+      sha256: "0ec10bf4a89e4c613960bf1e8b42c64127021740fb21640c29c909826a5eea3e"
       url: "https://pub.dev"
     source: hosted
-    version: "3.7.0"
+    version: "4.10.1"
   collection:
     dependency: transitive
     description:
@@ -229,10 +229,10 @@ packages:
     dependency: "direct dev"
     description:
       name: mockito
-      sha256: "0c90f7d828cfb473b5efe9e276d40d4c3d2552bb5677cbcac255f53b1cabdee7"
+      sha256: "6668f23c57bbf3857437c1683e8e0bef7e1077537593293e1fc8d1099fcc1981"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.3"
+    version: "5.0.15"
   node_preamble:
     dependency: transitive
     description:
@@ -466,4 +466,4 @@ packages:
     source: hosted
     version: "3.1.0"
 sdks:
-  dart: ">=2.12.0 <3.0.0"
+  dart: ">=3.5.0 <4.0.0"

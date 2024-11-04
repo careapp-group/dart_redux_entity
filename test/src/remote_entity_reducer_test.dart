@@ -4,6 +4,7 @@ import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
 import '../fixtures/book.dart';
+import '../fixtures/updateBook.dart';
 import 'remote_entity_reducer_tester.dart';
 
 void main() {
@@ -326,6 +327,24 @@ void main() {
         final result = reducer.call(
             RemoteEntityState<BookModel>(error: 'testerror'),
             RequestUpdateOne<BookModel>(BookModel(id: 'a', title: 'test')));
+        expect(result.error, false);
+      });
+    });
+    group('REQUEST UPDATE ONE BY ID WITH', () {
+      test('Should set loading for element true', () {
+        final result = reducer.call(
+            RemoteEntityState<BookModel>(),
+            RequestUpdateOneByIdWith<BookModel, UpdateBookModel>(
+              'bookId1',
+              UpdateBookModel(title: 'newTitle'),
+            ));
+        expect(result.loadingIds['bookId1'], true);
+      });
+      test('Should clear error', () {
+        final result = reducer.call(
+            RemoteEntityState<BookModel>(error: 'testerror'),
+            RequestUpdateOneByIdWith<BookModel, UpdateBookModel>(
+                'bookId1', UpdateBookModel(title: 'test')));
         expect(result.error, false);
       });
     });
