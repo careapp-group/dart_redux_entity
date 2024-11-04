@@ -399,6 +399,45 @@ void main() {
       });
     });
 
+    group(FailUpdateOneByIdWith, () {
+      test('Should set loading for element false', () {
+        final result = reducer.call(
+            RemoteEntityState<BookModel>(
+                creating: false,
+                loadingAll: false,
+                loadingIds: {
+                  'newBookId': true
+                },
+                entities: {
+                  'newBookId': BookModel(id: 'newBookId', title: 'asdf')
+                },
+                ids: [
+                  'newBookId'
+                ]),
+            FailUpdateOneByIdWith<BookModel, UpdateBookModel>(
+              id: 'newBookId',
+              entity: UpdateBookModel(title: 'new title'),
+              error: 'error',
+            ));
+        expect(result.loadingIds['newBookId'], false);
+      });
+      test('Should set the error', () {
+        final result = reducer.call(
+            RemoteEntityState<BookModel>(
+                creating: false,
+                loadingAll: false,
+                loadingIds: {'a': true},
+                entities: {'a': BookModel(id: 'a', title: 'asdf')},
+                ids: ['a']),
+            FailUpdateOneByIdWith<BookModel, UpdateBookModel>(
+              id: 'a',
+              entity: UpdateBookModel(title: 'new title'),
+              error: 'error',
+            ));
+        expect(result.error, 'error');
+      });
+    });
+
     group(RequestUpdateMany, () {
       test('Should set loading for each element true', () {
         final result = reducer.call(
