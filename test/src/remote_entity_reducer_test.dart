@@ -399,7 +399,7 @@ void main() {
       });
     });
 
-    group(FailUpdateOneByIdWith, () {
+    group(FailUpdateOneById, () {
       test('Should set loading for element false', () {
         final result = reducer.call(
             RemoteEntityState<BookModel>(
@@ -414,9 +414,8 @@ void main() {
                 ids: [
                   'newBookId'
                 ]),
-            FailUpdateOneByIdWith<BookModel, UpdateBookModel>(
+            FailUpdateOneById<BookModel>(
               id: 'newBookId',
-              entity: UpdateBookModel(title: 'new title'),
               error: 'error',
             ));
         expect(result.loadingIds['newBookId'], false);
@@ -429,9 +428,8 @@ void main() {
                 loadingIds: {'a': true},
                 entities: {'a': BookModel(id: 'a', title: 'asdf')},
                 ids: ['a']),
-            FailUpdateOneByIdWith<BookModel, UpdateBookModel>(
+            FailUpdateOneById<BookModel>(
               id: 'a',
-              entity: UpdateBookModel(title: 'new title'),
               error: 'error',
             ));
         expect(result.error, 'error');
