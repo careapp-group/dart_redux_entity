@@ -200,6 +200,19 @@ class FailUpdateOne<T> {
   Map<String, dynamic> toJson() => {'entity': entity, 'error': error};
 }
 
+class FailUpdateOneById<T> {
+  const FailUpdateOneById({
+    required this.id,
+    this.error,
+  });
+  final String id;
+  final dynamic error;
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'error': error,
+      };
+}
+
 class RequestUpdateManyWith<T, R> {
   const RequestUpdateManyWith(this.entities);
   final List<R> entities;
