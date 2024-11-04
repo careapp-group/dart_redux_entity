@@ -171,6 +171,16 @@ class RequestUpdateOneWith<T, R> {
       };
 }
 
+class RequestUpdateOneByIdWith<T, R> {
+  const RequestUpdateOneByIdWith(this.id, this.entity);
+  final String id;
+  final R entity;
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'entity': entity,
+      };
+}
+
 class RequestUpdateOne<T> extends RequestUpdateOneWith<T, T> {
   const RequestUpdateOne(T request) : super(request);
 }

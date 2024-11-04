@@ -62,6 +62,11 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
       newIds[adapter.getId(action.entity)] = true;
       return state.copyWith(loadingIds: newIds, error: false) as S;
     }
+    if (action is RequestUpdateOneByIdWith<T, dynamic>) {
+      Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
+      newIds[action.id] = true;
+      return state.copyWith(loadingIds: newIds, error: false) as S;
+    }
     if (action is RequestDeleteOne<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       newIds[action.id] = true;
