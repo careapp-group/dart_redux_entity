@@ -460,6 +460,30 @@ void main() {
         expect(result.error, false);
       });
     });
+    group(RequestUpdateManyByIdWith, () {
+      test('Should set loading for each element true', () {
+        final result = reducer.call(
+            RemoteEntityState<BookModel>(),
+            RequestUpdateManyByIdWith<BookModel, String>({
+              'a': 'testa',
+              'b': 'testb',
+              'c': 'testc',
+            }));
+        expect(result.loadingIds['a'], true);
+        expect(result.loadingIds['b'], true);
+        expect(result.loadingIds['c'], true);
+      });
+      test('Should clear error', () {
+        final result = reducer.call(
+            RemoteEntityState<BookModel>(),
+            RequestUpdateManyByIdWith<BookModel, String>({
+              'a': 'testa',
+              'b': 'testb',
+              'c': 'testc',
+            }));
+        expect(result.error, false);
+      });
+    });
     group(SuccessUpdateMany, () {
       test('items should be added to store', () {
         final result = reducer.call(
@@ -582,6 +606,58 @@ void main() {
             BookModel(id: 'b'),
             BookModel(id: 'c')
           ], error: 'error'),
+        );
+        expect(result.error, 'error');
+      });
+    });
+    group(FailUpdateManyById, () {
+      test('Should set loading for each element false', () {
+        final result = reducer.call(
+          RemoteEntityState<BookModel>(
+              creating: false,
+              loadingAll: false,
+              loadingIds: {
+                'a': true,
+                'b': true,
+                'c': true
+              },
+              entities: {
+                'a': BookModel(id: 'a', title: 'asdf1'),
+                'b': BookModel(id: 'b', title: 'asdf2'),
+                'c': BookModel(id: 'c', title: 'asdf3')
+              },
+              ids: [
+                'a',
+                'b',
+                'c'
+              ]),
+          FailUpdateManyById<BookModel>(ids: ['a', 'b', 'c'], error: 'error'),
+        );
+        expect(result.loadingIds['a'], false);
+        expect(result.loadingIds['b'], false);
+        expect(result.loadingIds['c'], false);
+      });
+      test('Should set the error', () {
+        final result = reducer.call(
+          RemoteEntityState<BookModel>(
+              creating: false,
+              loadingAll: false,
+              loadingIds: {
+                'a': true,
+                'b': true,
+                'c': true
+              },
+              entities: {
+                'a': BookModel(id: 'a', title: 'asdf1'),
+                'b': BookModel(id: 'b', title: 'asdf2'),
+                'c': BookModel(id: 'c', title: 'asdf3')
+              },
+              ids: [
+                'a',
+                'b',
+                'c'
+              ]),
+          FailUpdateManyById<BookModel>(ids: ['a', 'b', 'c'], error: 'error'),
         );
         expect(result.error, 'error');
       });

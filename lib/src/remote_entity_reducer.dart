@@ -170,6 +170,13 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
       }
       return state.copyWith(loadingIds: newIds, error: false) as S;
     }
+    if (action is RequestUpdateManyByIdWith<T, dynamic>) {
+      Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
+      for (String id in action.updates.keys) {
+        newIds[id] = true;
+      }
+      return state.copyWith(loadingIds: newIds, error: false) as S;
+    }
     if (action is RequestDeleteMany<T>) {
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       for (String id in action.ids) {
@@ -181,6 +188,13 @@ class RemoteEntityReducer<S extends RemoteEntityState<T>, T>
       Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
       for (T entity in action.entities) {
         newIds[adapter.getId(entity)] = false;
+      }
+      return state.copyWith(loadingIds: newIds, error: action.error) as S;
+    }
+    if (action is FailUpdateManyById<T>) {
+      Map<String, bool> newIds = Map<String, bool>.from(state.loadingIds);
+      for (String id in action.ids) {
+        newIds[id] = false;
       }
       return state.copyWith(loadingIds: newIds, error: action.error) as S;
     }
