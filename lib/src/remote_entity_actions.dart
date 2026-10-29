@@ -221,6 +221,18 @@ class RequestUpdateManyWith<T, R> {
       };
 }
 
+/// Update many entities by providing a map of ID to updates.
+///
+/// This is especially useful if the payload of your update
+/// does not include an ID
+class RequestUpdateManyByIdWith<T, R> {
+  const RequestUpdateManyByIdWith(this.updates);
+  final Map<String, R> updates;
+  Map<String, dynamic> toJson() => {
+        'updates': updates,
+      };
+}
+
 class RequestUpdateMany<T> extends RequestUpdateManyWith<T, T> {
   const RequestUpdateMany(List<T> entities) : super(entities);
 }
@@ -238,6 +250,13 @@ class FailUpdateMany<T> {
   final List<T> entities;
   final dynamic error;
   Map<String, dynamic> toJson() => {'entities': entities, 'error': error};
+}
+
+class FailUpdateManyById<T> {
+  const FailUpdateManyById({required this.ids, this.error});
+  final List<String> ids;
+  final dynamic error;
+  Map<String, dynamic> toJson() => {'ids': ids, 'error': error};
 }
 
 // cruD
