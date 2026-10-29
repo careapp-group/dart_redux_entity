@@ -1,3 +1,7 @@
+## [1.3.0]
+
+- Added new remote action RequestUpdateManyByIds, to allow bulk updates by providing a map of id => update payload
+
 ## [1.1.2]
 
 - Fix loading properties not being set when using `RequestCreateWith` and `RequestUpdateWith` actions.
