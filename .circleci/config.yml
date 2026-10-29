@@ -1,0 +1,45 @@
+version: 2.1
+parameters:
+  flutter-version:
+    type: string
+    default: "3.44.4"
+orbs:
+  codecov: codecov/codecov@1.0.2
+  flutter: circleci/flutter@3.0.0
+jobs:
+  test:
+    docker:
+      - image: cimg/android:2025.10.1
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout:
+          path: ~/repo
+      - flutter/install_sdk_and_pub:
+          version: << pipeline.parameters.flutter-version >>
+      - run: flutter pub global activate junitreport
+      - run: flutter pub get
+      - run:
+          name: Static Analysis
+          command: flutter analyze
+      - run: mkdir reports
+      - run:
+          name: Run Tests
+          command: |
+            set +e
+            flutter test --dart-define=CI=true --coverage --machine  | tee test_output.json
+            TEST_RESULT=${PIPESTATUS[0]}
+            flutter pub global run junitreport:tojunit --input test_output.json --output reports/test-results.xml
+            exit $TEST_RESULT
+      - codecov/upload:
+          file: coverage/lcov.info
+      - store_test_results:
+          path: ./reports
+
+workflows:
+  version: 2.1
+
+  test-build-deploy:
+    jobs:
+      - test
